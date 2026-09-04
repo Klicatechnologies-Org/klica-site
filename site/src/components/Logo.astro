@@ -1,0 +1,60 @@
+---
+// Vector rebuild of the Klica mark: gold K monogram inside an ellipse, with the
+// letterspaced KLICA wordmark. Kept in-repo and inline so the logo has no
+// external dependency and adds no extra request.
+//
+// TODO(owner): if you have the original vector/high-res logo, drop it in and
+// swap this component out; this is a faithful stand-in, not a pixel copy.
+
+interface Props {
+  wordmark?: boolean;
+  height?: number;
+  class?: string;
+}
+
+const { wordmark = true, height = 34, class: klass = "" } = Astro.props;
+const w = wordmark ? height * 3.35 : height * 0.82;
+---
+
+<svg
+  class={klass}
+  width={w}
+  height={height}
+  viewBox={wordmark ? "0 0 268 80" : "0 0 66 80"}
+  fill="none"
+  role="img"
+  aria-label="Klica Technologies"
+>
+  <defs>
+    <linearGradient id="klica-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8c860"></stop>
+      <stop offset="45%" stop-color="#d4af37"></stop>
+      <stop offset="100%" stop-color="#a8801f"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- monogram: hand-drawn ellipse + K -->
+  <g stroke="url(#klica-gold)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="33" cy="40" rx="25" ry="33" stroke-width="2.4"></ellipse>
+    <path d="M27 22v36" stroke-width="2.8"></path>
+    <path d="M45 21 26 42" stroke-width="2.8"></path>
+    <path d="M32 37c7 4 12 10 13 21" stroke-width="2.8"></path>
+  </g>
+
+  {
+    wordmark && (
+      <g fill="url(#klica-gold)">
+        <text
+          x="76"
+          y="52"
+          font-family="ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif"
+          font-size="34"
+          font-weight="500"
+          letter-spacing="7"
+        >
+          KLICA
+        </text>
+      </g>
+    )
+  }
+</svg>

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.netlify/
+.env
+.env.*
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Internal working notes and local backups - deliberately not published.
+SETUP.md
+_recovered/
+.claude/

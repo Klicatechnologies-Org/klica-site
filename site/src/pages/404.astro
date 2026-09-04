@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found" description="That page does not exist." index={false}>
+  <section class="section wrap center">
+    <span class="eyebrow">404</span>
+    <h1>We can&rsquo;t find that page</h1>
+    <p class="lede">
+      The link may be out of date. Try the app catalogue, or head back to the homepage.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn--gold" href="/apps">Browse apps</a>
+      <a class="btn btn--ghost" href="/">Go home</a>
+    </div>
+  </section>
+</Base>

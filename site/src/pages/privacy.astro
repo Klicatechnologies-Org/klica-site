@@ -1,0 +1,130 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+
+// Google Play requires a reachable privacy policy URL for every listing, and
+// because the apps serve AdMob advertising the policy must disclose that.
+//
+// TODO(owner): read this through and confirm every statement is true of your
+// apps before you point Play Console at it. Where it says "we do not", make sure
+// that is actually the case. This is a solid starting draft, not legal advice.
+
+const updated = "4 September 2026";
+---
+
+<Base
+  title="Privacy Policy"
+  description="How Klica Technologies collects, uses and protects your information across our websites and exam preparation apps."
+>
+  <section class="section wrap">
+    <div class="prose">
+      <span class="eyebrow">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p class="muted">Last updated: {updated}</p>
+
+      <p>
+        This policy explains how {site.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;) handles information
+        when you use our website at {site.domain} and our exam preparation applications
+        for Android and Windows (together, the &ldquo;Services&rdquo;).
+      </p>
+
+      <h2>Information we collect</h2>
+      <h3>Information you give us</h3>
+      <p>
+        When you contact us, request an app or join a waitlist, you may give us your name,
+        email address, phone number and the content of your message. We use this only to
+        respond to you and to decide which apps to build next.
+      </p>
+
+      <h3>Information collected automatically</h3>
+      <p>
+        Our apps and website collect limited technical information such as device type,
+        operating system version, app version, approximate region and crash diagnostics.
+        This helps us fix faults and keep the apps working across the wide range of devices
+        our users have.
+      </p>
+
+      <h3>Practice data</h3>
+      <p>
+        Your practice scores and progress are stored on your own device so that you can
+        track how you are improving. We do not upload your answers or your scores to our
+        servers.
+      </p>
+
+      <h2>Advertising</h2>
+      <p>
+        Our free apps are supported by advertising delivered through Google AdMob and its
+        partners. Advertising partners may collect and use device identifiers (such as the
+        Android Advertising ID) and related data to select and measure the adverts you see,
+        including personalised adverts where you have consented to them.
+      </p>
+      <p>
+        You can review and reset your advertising identifier, or opt out of personalised
+        advertising, in your device settings. Google&rsquo;s handling of this data is described in
+        the <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google Privacy &amp; Terms</a> pages.
+      </p>
+      <p>
+        The authorised sellers permitted to sell advertising inventory in our apps are
+        published at <a href={`https://${site.domain}/app-ads.txt`}>{site.domain}/app-ads.txt</a>,
+        in line with the IAB app-ads.txt standard.
+      </p>
+
+      <h2>How we use information</h2>
+      <ul>
+        <li>To provide, maintain and improve the Services.</li>
+        <li>To respond to your questions and app requests.</li>
+        <li>To diagnose crashes and technical faults.</li>
+        <li>To display advertising that keeps the free apps free.</li>
+        <li>To comply with legal obligations.</li>
+      </ul>
+
+      <h2>Sharing</h2>
+      <p>
+        We do not sell your personal information. We share information only with service
+        providers who help us operate the Services (such as our hosting provider, analytics
+        and advertising partners), and where we are required to by law.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        Our apps are used by secondary school students, some of whom are under 18. We do not
+        knowingly collect more personal information from a child than is needed to run the app.
+        If you believe a child has given us information they should not have, contact us and we
+        will delete it.
+      </p>
+
+      <h2>Retention</h2>
+      <p>
+        We keep correspondence for as long as needed to answer you and to keep a record of
+        app requests. Practice data lives on your device and is removed when you uninstall
+        the app or clear its data.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You may ask us for a copy of the personal information we hold about you, ask us to
+        correct it, or ask us to delete it. Write to
+        <a href={`mailto:${site.email}`}>{site.email}</a> and we will respond.
+      </p>
+
+      <h2>Security</h2>
+      <p>
+        We take reasonable technical and organisational measures to protect information.
+        No method of transmission or storage is completely secure, so we cannot guarantee
+        absolute security.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We may update this policy. When we do, we will change the date at the top of this page.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        {site.name}<br />
+        Email: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        Phone: <a href={site.phoneHref}>{site.phone}</a>
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,70 @@
+---
+import Logo from "./Logo.astro";
+
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/apps", label: "Apps" },
+  { href: "/services", label: "Services" },
+  { href: "/contact", label: "Contact" },
+];
+const isCurrent = (href: string) =>
+  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+---
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a href="/" aria-label="Klica Technologies home" style="display:flex">
+      <Logo height={32} />
+    </a>
+
+    <button
+      class="burger"
+      id="burger"
+      type="button"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="nav"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"></path>
+      </svg>
+    </button>
+
+    <nav class="hdr__nav" id="nav">
+      {
+        nav.map((n) => (
+          <a href={n.href} aria-current={isCurrent(n.href) ? "page" : undefined}>
+            {n.label}
+          </a>
+        ))
+      }
+      <a class="btn btn--gold" href="/apps/android" style="margin-left:.4rem">Download Apps</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu. Hidden by default only below the breakpoint, so we drive the
+  // `hidden` attribute rather than inline display, and reset it on resize up.
+  const burger = document.getElementById("burger");
+  const nav = document.getElementById("nav");
+  const mq = window.matchMedia("(max-width: 820px)");
+
+  const sync = () => {
+    if (!nav || !burger) return;
+    const collapsed = mq.matches;
+    nav.hidden = collapsed;
+    burger.setAttribute("aria-expanded", "false");
+  };
+
+  burger?.addEventListener("click", () => {
+    if (!nav) return;
+    const open = nav.hidden;
+    nav.hidden = !open;
+    burger.setAttribute("aria-expanded", String(open));
+  });
+
+  mq.addEventListener("change", sync);
+  sync();
+</script>

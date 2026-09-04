@@ -1,0 +1,75 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+
+// TODO(owner): review before publishing. Starting draft, not legal advice.
+const updated = "4 September 2026";
+---
+
+<Base
+  title="Terms of Service"
+  description="The terms that govern your use of Klica Technologies websites, exam preparation apps and services."
+>
+  <section class="section wrap">
+    <div class="prose">
+      <span class="eyebrow">Legal</span>
+      <h1>Terms of Service</h1>
+      <p class="muted">Last updated: {updated}</p>
+
+      <p>
+        These terms govern your use of the {site.name} website at {site.domain} and our
+        exam preparation applications. By using them, you agree to these terms.
+      </p>
+
+      <h2>Using our apps</h2>
+      <p>
+        We grant you a personal, non-transferable licence to install and use our apps for
+        your own study. You may not resell, redistribute, decompile or repackage them, or
+        strip out the advertising that funds the free versions.
+      </p>
+
+      <h2>Study content</h2>
+      <p>
+        Our practice questions are prepared for revision purposes. We work to keep them
+        accurate and current, but we are not affiliated with JAMB, WAEC, NECO, or any
+        university, and we do not guarantee that any particular question will appear in an
+        examination. Nothing in our apps is an official examination product.
+      </p>
+
+      <h2>Institution names</h2>
+      <p>
+        Names such as JAMB, WAEC, NECO and the names of universities are used only to
+        describe which examination an app prepares you for. They remain the property of
+        their respective owners, and their use here does not imply endorsement.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        The Klica name, logo, app content, question banks and website are owned by {site.name}
+        and protected by copyright and trade mark law.
+      </p>
+
+      <h2>Availability</h2>
+      <p>
+        We aim to keep the Services running, but we may change, suspend or withdraw any part
+        of them. Apps are provided &ldquo;as is&rdquo;, without warranty of any kind.
+      </p>
+
+      <h2>Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by law, {site.name} is not liable for indirect or
+        consequential loss arising from your use of the Services, including examination
+        outcomes.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of the Federal Republic of Nigeria.</p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms? Email
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+  </section>
+</Base>

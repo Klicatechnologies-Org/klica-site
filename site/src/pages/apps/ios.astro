@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import { site } from "../../data/site";
+
+// There is no form backend yet, and a form that silently discards what people
+// type is worse than no form. Until one exists, this routes to WhatsApp, which
+// the business already monitors.
+const waitlistMsg = "Hi Klica! Please add me to the iOS waitlist and let me know when the iPhone apps launch.";
+const waitlistUrl = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(waitlistMsg)}`;
+---
+
+<Base
+  title="iOS Apps"
+  description="Klica exam preparation apps for iPhone and iPad are in development. Join the waitlist to hear the moment they launch on the App Store."
+>
+  <section class="section wrap center">
+    <span class="eyebrow">iOS</span>
+    <h1>Coming soon</h1>
+    <p class="lede">
+      Our team is building the iPhone and iPad apps now. Tell us you want them and
+      you will be among the first to know when they reach the App Store.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn--gold" href={waitlistUrl} target="_blank" rel="noopener">
+        Join the waitlist on WhatsApp
+      </a>
+      <a class="btn btn--ghost" href={`mailto:${site.email}?subject=${encodeURIComponent("iOS waitlist")}`}>
+        Email us instead
+      </a>
+    </div>
+
+    <p class="muted" style="margin-top:2.5rem;font-size:.92rem">
+      Studying on Android or Windows in the meantime?
+      <a href="/apps/android" style="color:var(--gold)">Browse those apps</a>.
+    </p>
+  </section>
+</Base>

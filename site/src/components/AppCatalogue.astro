@@ -1,0 +1,52 @@
+---
+import type { Category, Platform } from "../data/apps";
+
+interface Props {
+  categories: Category[];
+  platform: Platform;
+}
+
+const { categories, platform } = Astro.props;
+
+const linkFor = (playId: string | undefined, desktopUrl: string | undefined) =>
+  platform === "android"
+    ? playId
+      ? `https://play.google.com/store/apps/details?id=${playId}`
+      : undefined
+    : desktopUrl;
+---
+
+{
+  categories.map((cat) => (
+    <section class="section" id={cat.slug} style="padding-block:2.5rem">
+      <h2 style="font-size:1.5rem">{cat.title}</h2>
+      <p class="lede" style="font-size:.98rem">{cat.blurb}</p>
+
+      {cat.apps.length === 0 ? (
+        <p class="muted" style="font-size:.92rem;font-style:italic">
+          Apps for this category are in development. Ask us on WhatsApp to be told when they land.
+        </p>
+      ) : (
+        <div class="grid grid--apps" style="margin-top:1.5rem">
+          {cat.apps.map((app) => {
+            const href = linkFor(app.playId, app.desktopUrl);
+            return (
+              <article class="app">
+                <span class="app__abbr">{app.name}</span>
+                <span class="app__sub">{app.subtitle}</span>
+                <span class="app__full">{app.fullName}</span>
+                {href ? (
+                  <a class="app__cta" href={href} target="_blank" rel="noopener">
+                    Download &rarr;
+                  </a>
+                ) : (
+                  <span class="app__cta" aria-disabled="true">Coming soon</span>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  ))
+}

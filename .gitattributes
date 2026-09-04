@@ -1,0 +1,14 @@
+# Default: let git normalise text line endings.
+* text=auto
+
+# app-ads.txt must be byte-identical everywhere. Treat it as binary so no
+# platform ever rewrites its line endings between commit, checkout and deploy.
+# Its SHA256 is the verification mechanism for the AdMob migration.
+app-ads.txt -text
+site/public/app-ads.txt -text
+_recovered/app-ads.txt -text
+
+# Binary assets
+*.png binary
+*.ico binary
+*.woff2 binary

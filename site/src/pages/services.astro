@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import { whatsappUrl } from "../data/site";
+
+const services = [
+  {
+    title: "Mobile app development",
+    body: "Android and cross-platform apps, from first sketch to a live Play Store listing. We have shipped and maintained a catalogue of our own, so we know what the store actually asks of you.",
+    points: ["Android & cross-platform", "Play Store submission", "Ongoing maintenance"],
+  },
+  {
+    title: "Web development",
+    body: "Fast, search-friendly websites that load quickly on Nigerian mobile networks — because a site that takes ten seconds on 3G is a site nobody sees.",
+    points: ["Marketing sites & landing pages", "Performance and SEO built in", "Hosting and domain setup"],
+  },
+  {
+    title: "Digital marketing",
+    body: "Campaigns aimed at the people already searching for what you sell, run by a team that understands the local market rather than guessing at it.",
+    points: ["Search and social campaigns", "Content and creative", "Reporting you can actually read"],
+  },
+];
+---
+
+<Base
+  title="Services"
+  description="Klica Technologies builds mobile apps and websites and runs digital marketing campaigns for businesses across Nigeria and West Africa."
+>
+  <section class="section wrap center" style="padding-bottom:1rem">
+    <span class="eyebrow">For businesses</span>
+    <h1>Services</h1>
+    <p class="lede">
+      The same team that builds our exam apps is available for your project.
+    </p>
+  </section>
+
+  <section class="wrap section" style="padding-top:2rem">
+    <div class="grid grid--3">
+      {
+        services.map((s) => (
+          <article class="card">
+            <h3>{s.title}</h3>
+            <p style="font-size:.94rem">{s.body}</p>
+            <ul style="list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.45rem">
+              {s.points.map((p) => (
+                <li style="font-size:.88rem;color:var(--muted);display:flex;gap:.5rem;align-items:flex-start">
+                  <span style="color:var(--gold);font-weight:700">&check;</span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="center" style="margin-top:3rem">
+      <h2>Ready to start?</h2>
+      <p class="lede">Tell us what you are building and we will come back with a plan and a price.</p>
+      <div class="cta-row">
+        <a class="btn btn--gold" href="/contact">Get in touch</a>
+        <a class="btn btn--ghost" href={whatsappUrl} target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Base>

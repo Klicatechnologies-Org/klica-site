@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import { totalApps } from "../../data/apps";
+
+const platforms = [
+  {
+    href: "/apps/android",
+    title: "Android Apps",
+    body: "Our Android apps give you a seamless learning experience on the go. Download from the Google Play Store and prepare for UTME, WAEC, BECE and Post-UTME anytime, anywhere.",
+    cta: "Explore Android apps",
+    ready: true,
+  },
+  {
+    href: "/apps/desktop",
+    title: "Desktop Apps",
+    body: "Prefer a larger screen? Our Windows desktop apps bring the full suite of practice tools to your laptop, with everything available offline once installed.",
+    cta: "Explore desktop apps",
+    ready: true,
+  },
+  {
+    href: "/apps/ios",
+    title: "iOS Apps",
+    body: "For iPhone and iPad. Our team is building this now — join the waitlist and we will tell you the moment it lands on the App Store.",
+    cta: "Join the waitlist",
+    ready: false,
+  },
+];
+---
+
+<Base
+  title="Download Our Apps"
+  description={`Download Klica exam preparation apps on Android and Windows — ${totalApps}+ apps covering JAMB UTME, WAEC, NECO, BECE and Post-UTME for 23 Nigerian universities.`}
+>
+  <section class="section wrap center">
+    <span class="eyebrow">Download</span>
+    <h1>Our apps</h1>
+    <p class="lede">
+      {totalApps}+ exam preparation apps, on the platform that suits how you study.
+    </p>
+  </section>
+
+  <section class="wrap" style="padding-bottom:4rem">
+    <div class="grid grid--3">
+      {
+        platforms.map((p) => (
+          <article class="card">
+            <h3>{p.title}</h3>
+            <p style="font-size:.94rem">{p.body}</p>
+            <a class="app__cta" href={p.href}>
+              {p.cta} &rarr;
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,153 @@
+---
+import Base from "../layouts/Base.astro";
+import { site, whatsappUrl } from "../data/site";
+---
+
+<Base
+  title="Contact Us"
+  description="Get in touch with Klica Technologies — request an exam app, ask about app or web development, or start a digital marketing project."
+>
+  <section class="section wrap center" style="padding-bottom:1rem">
+    <span class="eyebrow">Contact</span>
+    <h1>Let&rsquo;s talk</h1>
+    <p class="lede">
+      Request an exam app, ask about a project, or just say hello. We reply fastest on WhatsApp.
+    </p>
+  </section>
+
+  <section class="wrap section" style="padding-top:1.5rem">
+    <div class="contact-split">
+      <div>
+        <form id="contact-form" class="form" novalidate>
+          <div class="field">
+            <label for="name">Name <span aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" required autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" required autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="subject">Subject <span aria-hidden="true">*</span></label>
+            <input id="subject" name="subject" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="message">What can we help you with? <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+
+          <button class="btn btn--gold" type="submit" style="width:100%">Send via WhatsApp</button>
+          <p class="muted" style="font-size:.82rem;margin-top:.75rem">
+            This opens WhatsApp with your message ready to send, so nothing gets lost in transit.
+            Prefer email? <a href={`mailto:${site.email}`} style="color:var(--gold)">Write to us directly</a>.
+          </p>
+        </form>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3>Reach us directly</h3>
+          <ul style="list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.9rem">
+            <li>
+              <span class="app__sub">Phone</span><br />
+              <a href={site.phoneHref} style="text-decoration:none;font-weight:600">{site.phone}</a>
+            </li>
+            <li>
+              <span class="app__sub">Email</span><br />
+              <a href={`mailto:${site.email}`} style="text-decoration:none;font-weight:600;word-break:break-all">
+                {site.email}
+              </a>
+            </li>
+            <li>
+              <span class="app__sub">WhatsApp</span><br />
+              <a href={whatsappUrl} target="_blank" rel="noopener" style="text-decoration:none;font-weight:600">
+                Start a chat &rarr;
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 820px) {
+    .contact-split { grid-template-columns: 1fr; }
+  }
+
+  .form {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .field { margin-bottom: 1.1rem; }
+  .field label {
+    display: block;
+    font-size: .85rem;
+    font-weight: 650;
+    margin-bottom: .4rem;
+  }
+  .field label span { color: var(--gold); }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: .75rem .9rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: .95rem;
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field input:focus, .field textarea:focus {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+  .field input:user-invalid, .field textarea:user-invalid { border-color: #c0392b; }
+  .field .err { color: #c0392b; font-size: .8rem; margin-top: .3rem; display: none; }
+  .field.invalid .err { display: block; }
+</style>
+
+<script>
+  import { site } from "../data/site";
+
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const get = (k: string) => String(data.get(k) ?? "").trim();
+
+    const body = [
+      `Hello Klica! I'm getting in touch from your website.`,
+      ``,
+      `Name: ${get("name")}`,
+      `Email: ${get("email")}`,
+      `Subject: ${get("subject")}`,
+      ``,
+      get("message"),
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(body)}`,
+      "_blank",
+      "noopener",
+    );
+  });
+</script>
