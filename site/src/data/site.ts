@@ -26,8 +26,7 @@ export const site = {
     instagram: 'https://www.instagram.com/KlicaNg',
   },
 
-  // TODO(owner): replace with the real Google Play developer page URL.
-  playDeveloperUrl: '',
+  playDeveloperUrl: 'https://play.google.com/store/apps/dev?id=KLICA+TECHNOLOGIES',
 } as const;
 
 export const whatsappUrl = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(site.whatsappMessage)}`;

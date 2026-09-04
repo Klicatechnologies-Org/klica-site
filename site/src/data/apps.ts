@@ -1,10 +1,17 @@
 // The Klica app catalogue.
 //
-// `playId` is the Android package name. Leave it empty and the card renders a
-// "Coming soon" state rather than a link that goes nowhere -- an honest empty
-// state is better than a dead button.
+// Every exam below now ships inside a single consolidated Android app, so all
+// Android cards link to the same Play Store listing. The categories still matter
+// as a way for students to find the exam they are sitting.
 //
-// TODO(owner): fill in playId for each app from Google Play Console.
+// Desktop apps are still per-exam. `desktopUrl` is empty for now, so those cards
+// render a "Coming soon" state rather than a link that goes nowhere.
+//
+// TODO(owner): fill in desktopUrl for each app once the downloads are hosted.
+
+/** The consolidated Android app that covers every exam in this catalogue. */
+export const ANDROID_APP_URL =
+  'https://play.google.com/store/apps/details?id=com.onesitting.jambcbtapp';
 
 export type Platform = 'android' | 'desktop';
 
@@ -13,7 +20,6 @@ export interface App {
   subtitle: string;
   /** Full institution / exam name, spelled out for search engines. */
   fullName: string;
-  playId?: string;
   desktopUrl?: string;
   platforms: Platform[];
 }

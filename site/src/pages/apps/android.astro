@@ -1,7 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import AppCatalogue from "../../components/AppCatalogue.astro";
-import { forPlatform } from "../../data/apps";
+import { forPlatform, ANDROID_APP_URL } from "../../data/apps";
 import { whatsappUrl } from "../../data/site";
 
 const cats = forPlatform("android");
@@ -9,16 +9,21 @@ const count = cats.reduce((n, c) => n + c.apps.length, 0);
 ---
 
 <Base
-  title="Android Apps"
-  description="Download Klica exam preparation apps for Android — JAMB UTME CBT practice, WAEC, BECE and Post-UTME apps for 23 Nigerian universities including UNILAG, UI, OAU, ABU and UNN."
+  title="Android App"
+  description="One Android app covering JAMB UTME CBT practice, WAEC, BECE and Post-UTME for 23 Nigerian universities including UNILAG, UI, OAU, ABU and UNN. Free on Google Play."
 >
   <section class="section wrap center" style="padding-bottom:1rem">
     <span class="eyebrow">Android</span>
-    <h1>Android apps</h1>
+    <h1>One app, every exam</h1>
     <p class="lede">
-      {count} apps built for practice on the go. Install once, then study offline
-      whenever you have a spare moment.
+      All {count} exams below now live in a single app. Install it once, then practise
+      for any of them offline, whenever you have a spare moment.
     </p>
+    <div class="cta-row">
+      <a class="btn btn--gold" href={ANDROID_APP_URL} target="_blank" rel="noopener">
+        Get it on Google Play
+      </a>
+    </div>
   </section>
 
   <div class="wrap">

@@ -1,5 +1,6 @@
 ---
 import type { Category, Platform } from "../data/apps";
+import { ANDROID_APP_URL } from "../data/apps";
 
 interface Props {
   categories: Category[];
@@ -8,12 +9,11 @@ interface Props {
 
 const { categories, platform } = Astro.props;
 
-const linkFor = (playId: string | undefined, desktopUrl: string | undefined) =>
-  platform === "android"
-    ? playId
-      ? `https://play.google.com/store/apps/details?id=${playId}`
-      : undefined
-    : desktopUrl;
+// Android is one consolidated app covering every exam, so each card points at the
+// same listing. Desktop is still per-exam and falls back to a "Coming soon" state
+// until the download URLs exist.
+const linkFor = (desktopUrl: string | undefined) =>
+  platform === "android" ? ANDROID_APP_URL : desktopUrl;
 ---
 
 {
@@ -29,7 +29,7 @@ const linkFor = (playId: string | undefined, desktopUrl: string | undefined) =>
       ) : (
         <div class="grid grid--apps" style="margin-top:1.5rem">
           {cat.apps.map((app) => {
-            const href = linkFor(app.playId, app.desktopUrl);
+            const href = linkFor(app.desktopUrl);
             return (
               <article class="app">
                 <span class="app__abbr">{app.name}</span>
