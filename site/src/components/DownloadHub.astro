@@ -13,9 +13,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
     </div>
 
     <h1 class="dl__title">
-      <span class="dl__kicker">Download the OneSitting app today</span>
-      to pass <mark>JAMB 2027</mark>, <mark>WAEC 2027</mark> and <mark>POST UTME 2027</mark>
-      at <span class="dl__brand">OneSitting</span>
+      Download the OneSitting app today to pass JAMB 2027, WAEC 2027 and POST UTME 2027 at one sitting
     </h1>
 
     <div class="dl__buttons">
@@ -269,21 +267,9 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
 
   /* headline */
   .dl__title {
-    max-width: 30ch; margin: 0 auto; font-weight: 900; line-height: 1.15; letter-spacing: -.02em; color: var(--ink);
+    max-width: 30ch; margin: 0 auto; font-weight: 700; line-height: 1.25; color: var(--ink);
     font-size: clamp(1.35rem, min(.8rem + 2.8vw, 5.4vh), 2.9rem);
   }
-  .dl__kicker {
-    display: block; font-size: .8em; text-transform: uppercase; letter-spacing: .03em;
-    background: linear-gradient(90deg, var(--os-green), var(--os-green-2), var(--gold-bright), var(--os-green));
-    background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shine 6s linear infinite; margin-bottom: .15em;
-  }
-  @keyframes shine { to { background-position: 300% 0; } }
-  .dl__title mark {
-    background: linear-gradient(transparent 60%, color-mix(in srgb, var(--gold-bright) 50%, transparent) 60%);
-    color: inherit; padding-inline: .05em; white-space: nowrap;
-  }
-  .dl__brand { color: var(--os-green-2); }
 
   /* pulsing download buttons */
   .dl__buttons { display: grid; gap: .75rem; width: 100%; max-width: 860px; grid-template-columns: repeat(3, 1fr); }
