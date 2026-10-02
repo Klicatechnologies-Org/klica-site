@@ -1,0 +1,396 @@
+---
+import { oneSitting } from "../data/site";
+
+const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
+---
+
+<section class="dl" id="download">
+  <div class="wrap dl__inner">
+    <div class="dl__logo" aria-hidden="true">
+      <span class="dl__ring"></span>
+      <span class="dl__ring dl__ring--2"></span>
+      <img src="/onesitting-logo.webp" alt="" width="192" height="192" />
+    </div>
+
+    <h1 class="dl__title">
+      <span class="dl__kicker">Download the OneSitting app today</span>
+      to pass <mark>JAMB 2027</mark>, <mark>WAEC 2027</mark> and <mark>POST UTME 2027</mark>
+      at <span class="dl__brand">OneSitting</span>
+    </h1>
+
+    <div class="dl__buttons">
+      <a class="dlb dlb--android" href={oneSitting.playUrl} target="_blank" rel="noopener" data-dl="android">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 1 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25A1.25 1.25 0 1 1 8.25 14 1.25 1.25 0 0 1 7 15.25zm10 0A1.25 1.25 0 1 1 18.25 14 1.25 1.25 0 0 1 17 15.25z"/></svg>
+        <span><small>Download for</small><b>Android</b></span>
+      </a>
+
+      <a class="dlb dlb--ios" href={oneSitting.appStoreUrl} target="_blank" rel="noopener" data-dl="ios" data-app-store-id={oneSitting.appStoreId}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.75c-.02-2.3 1.88-3.4 1.96-3.46a4.22 4.22 0 0 0-3.32-1.8c-1.41-.14-2.76.83-3.48.83s-1.82-.81-3-.79a4.43 4.43 0 0 0-3.74 2.27c-1.6 2.77-.41 6.86 1.15 9.1.76 1.1 1.67 2.33 2.86 2.29 1.15-.05 1.58-.74 2.97-.74s1.78.74 2.99.72c1.24-.02 2.02-1.12 2.77-2.22a9.86 9.86 0 0 0 1.26-2.58 3.98 3.98 0 0 1-2.42-3.62zM14.1 5.98A4 4 0 0 0 15.04 3a4.08 4.08 0 0 0-2.65 1.37 3.8 3.8 0 0 0-.96 2.88 3.37 3.37 0 0 0 2.67-1.27z"/></svg>
+        <span><small>Download for</small><b>iPhone &amp; iPad</b></span>
+      </a>
+
+      <button class="dlb dlb--desktop" type="button" data-dl="desktop" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 14.5zM5 5v9h14V5zM1 18h22v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2z"/></svg>
+        <span><small>Download for</small><b>Laptop / Desktop</b></span>
+      </button>
+    </div>
+
+    <p class="dl__note" data-ios-note hidden>
+      The iPhone version is in final review with Apple and will be on the App Store very soon.
+      This button will take you straight to it once it is live.
+    </p>
+  </div>
+
+  <!-- Desktop: choose a computer, then download with progress -->
+  <dialog class="dlg" id="desktop-dialog" aria-labelledby="desktop-title">
+    <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+
+    <div data-step="choose">
+      <h2 id="desktop-title">Download for your computer</h2>
+      <p class="muted">Pick the kind of computer you are using.</p>
+      <div class="pick">
+        <button class="pick__opt" type="button" data-pick="windows">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3zm8.5-1.25L21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zm8.5 0H21V21l-9.5-1.3z"/></svg>
+          <span><b>Windows laptop or PC</b><small>Windows 10 or 11 &middot; {windowsMb} MB</small></span>
+        </button>
+        <button class="pick__opt" type="button" data-pick="mac" disabled={!oneSitting.macReady}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.75c-.02-2.3 1.88-3.4 1.96-3.46a4.22 4.22 0 0 0-3.32-1.8c-1.41-.14-2.76.83-3.48.83s-1.82-.81-3-.79a4.43 4.43 0 0 0-3.74 2.27c-1.6 2.77-.41 6.86 1.15 9.1.76 1.1 1.67 2.33 2.86 2.29 1.15-.05 1.58-.74 2.97-.74s1.78.74 2.99.72c1.24-.02 2.02-1.12 2.77-2.22a9.86 9.86 0 0 0 1.26-2.58 3.98 3.98 0 0 1-2.42-3.62zM14.1 5.98A4 4 0 0 0 15.04 3a4.08 4.08 0 0 0-2.65 1.37 3.8 3.8 0 0 0-.96 2.88 3.37 3.37 0 0 0 2.67-1.27z"/></svg>
+          <span><b>MacBook / Mac</b><small>{oneSitting.macReady ? "macOS" : "Coming soon"}</small></span>
+        </button>
+      </div>
+      <p class="dl__phone muted" data-phone-hint hidden>
+        You seem to be on a phone. This download is for laptops and desktop computers &mdash; on your
+        phone, use the Android or iPhone button instead.
+      </p>
+    </div>
+
+    <div data-step="progress" hidden>
+      <h2>Downloading OneSitting for Windows</h2>
+      <p class="muted" data-status>Starting download&hellip;</p>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Download progress">
+        <span class="bar__fill"></span>
+      </div>
+      <div class="bar__meta"><span data-pct>0%</span><span data-bytes></span></div>
+      <p class="muted small">Please keep this page open until the download finishes.</p>
+      <div class="dlg__row">
+        <button class="btn btn--ghost" type="button" data-cancel>Cancel</button>
+      </div>
+    </div>
+
+    <div data-step="done" hidden>
+      <h2>Download complete 🎉</h2>
+      <p>Tap <b>Install</b> to save the installer to your computer, then open it to finish setting up OneSitting.</p>
+      <div class="dlg__row">
+        <button class="btn dlb--install" type="button" data-install>Install OneSitting</button>
+        <button class="btn btn--ghost" type="button" data-howto>Learn how to install the app</button>
+      </div>
+      <p class="muted small" data-after-install hidden>
+        Your browser has saved <b data-filename>the installer</b>. Click it in your browser&rsquo;s downloads
+        (top right in Chrome and Edge) or find it in your <b>Downloads</b> folder, then open it.
+      </p>
+    </div>
+
+    <div data-step="error" hidden>
+      <h2>The download stopped</h2>
+      <p data-error>Something went wrong with the connection.</p>
+      <div class="dlg__row">
+        <button class="btn dlb--install" type="button" data-retry>Try again</button>
+        <a class="btn btn--ghost" data-direct href={`${oneSitting.downloadsApi}/windows`} rel="nofollow">Download with my browser instead</a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- How to install on Windows -->
+  <dialog class="dlg dlg--wide" id="howto-dialog" aria-labelledby="howto-title">
+    <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+    <h2 id="howto-title">How to install OneSitting on Windows</h2>
+    <ol class="steps">
+      <li>
+        <b>Open the installer.</b> Click <i>OneSitting-Setup.msi</i> in your browser&rsquo;s downloads list,
+        or double-click it in your <b>Downloads</b> folder.
+      </li>
+      <li>
+        <b>If Windows shows a blue &ldquo;Windows protected your PC&rdquo; box, that&rsquo;s okay.</b>
+        Windows shows this for new apps it hasn&rsquo;t seen many times yet. Click <b>More info</b>, then
+        <b>Run anyway</b>.
+        <div class="shots" aria-hidden="true">
+          <figure class="ss">
+            <div class="ss__win">
+              <p class="ss__h">Windows protected your PC</p>
+              <p class="ss__t">Microsoft Defender SmartScreen prevented an unrecognised app from starting&hellip;</p>
+              <p class="ss__link"><span class="hl">More info</span></p>
+              <div class="ss__btns"><span class="ss__btn">Don&rsquo;t run</span></div>
+            </div>
+            <figcaption>1. Click <b>More info</b></figcaption>
+          </figure>
+          <figure class="ss">
+            <div class="ss__win">
+              <p class="ss__h">Windows protected your PC</p>
+              <p class="ss__t">App: OneSitting-Setup.msi<br />Publisher: Unknown publisher</p>
+              <div class="ss__btns"><span class="ss__btn hl">Run anyway</span><span class="ss__btn">Don&rsquo;t run</span></div>
+            </div>
+            <figcaption>2. Click <b>Run anyway</b></figcaption>
+          </figure>
+        </div>
+      </li>
+      <li><b>Follow the installer.</b> Click <b>Next</b> / <b>Install</b> and wait a few seconds for it to finish.</li>
+      <li><b>Start OneSitting.</b> Open the Start menu, type <b>OneSitting</b> and press Enter. Good luck in your exams!</li>
+    </ol>
+    <p class="muted small">Need help? Chat with us on WhatsApp &mdash; the link is at the bottom of this page.</p>
+  </dialog>
+</section>
+
+<script define:vars={{ api: oneSitting.downloadsApi, fallbackSize: oneSitting.windowsSizeBytes, appStoreId: oneSitting.appStoreId }}>
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const desktop = $("#desktop-dialog");
+  const howto = $("#howto-dialog");
+  const isPhone = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+  // ---- iOS: until Apple approves the app, explain instead of opening an empty store page ----
+  const iosBtn = $('[data-dl="ios"]');
+  const iosNote = $("[data-ios-note]");
+  let iosLive = null; // null = unknown (keep the plain link), true/false once checked
+  window.__osIosLookup = (data) => { iosLive = !!(data && data.resultCount > 0); };
+  const lookup = document.createElement("script");
+  lookup.src = `https://itunes.apple.com/lookup?id=${appStoreId}&country=ng&callback=__osIosLookup`;
+  lookup.async = true;
+  document.head.appendChild(lookup);
+  iosBtn.addEventListener("click", (e) => {
+    if (iosLive === false) {
+      e.preventDefault();
+      iosNote.hidden = false;
+      iosNote.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  });
+
+  // ---- dialogs ----
+  const open = (d) => (d.showModal ? d.showModal() : d.setAttribute("open", ""));
+  document.querySelectorAll("dialog").forEach((d) => {
+    d.addEventListener("click", (e) => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
+  });
+  const show = (step) => desktop.querySelectorAll("[data-step]").forEach((s) => (s.hidden = s.dataset.step !== step));
+
+  $('[data-dl="desktop"]').addEventListener("click", () => {
+    if (!controller) show(blobUrl ? "done" : "choose");
+    $("[data-phone-hint]").hidden = !isPhone;
+    open(desktop);
+  });
+  $("[data-howto]").addEventListener("click", () => open(howto));
+  desktop.querySelector('[data-pick="windows"]').addEventListener("click", startWindows);
+  $("[data-retry]").addEventListener("click", startWindows);
+  $("[data-cancel]").addEventListener("click", () => { controller?.abort(); show("choose"); });
+
+  // ---- Windows download with a visible progress bar ----
+  let controller = null;
+  let blobUrl = null;
+  let filename = "OneSitting-Setup.msi";
+  const fill = $(".bar__fill");
+  const bar = $(".bar");
+  const mb = (n) => (n / 1048576).toFixed(n < 10485760 ? 1 : 0);
+
+  function setProgress(got, total, started) {
+    const pct = total ? Math.min(100, Math.floor((got / total) * 100)) : 0;
+    fill.style.width = pct + "%";
+    bar.setAttribute("aria-valuenow", String(pct));
+    $("[data-pct]").textContent = pct + "%";
+    const secs = (performance.now() - started) / 1000;
+    const speed = secs > 1 ? got / secs : 0;
+    const left = speed && total ? Math.max(0, Math.round((total - got) / speed)) : null;
+    $("[data-bytes]").textContent = `${mb(got)} MB of ${mb(total)} MB`;
+    $("[data-status]").textContent = left == null ? "Downloading…"
+      : `Downloading… about ${left > 90 ? Math.round(left / 60) + " min" : left + " sec"} left`;
+  }
+
+  async function startWindows() {
+    show("progress");
+    setProgress(0, fallbackSize, performance.now());
+    controller = new AbortController();
+    const started = performance.now();
+    try {
+      const res = await fetch(`${api}/windows`, { signal: controller.signal, cache: "no-store" });
+      if (res.status === 429) throw new Error("Too many downloads from your network right now. Please wait a minute and tap Try again.");
+      if (!res.ok || !res.body) throw new Error("The download is not available right now. Please try again in a moment.");
+      const total = Number(res.headers.get("Content-Length")) || fallbackSize;
+      const cd = res.headers.get("Content-Disposition") || "";
+      filename = (cd.match(/filename="?([^";]+)"?/) || [])[1] || filename;
+      const reader = res.body.getReader();
+      const chunks = [];
+      let got = 0;
+      let lastPaint = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        got += value.byteLength;
+        const now = performance.now();
+        if (now - lastPaint > 200) { setProgress(got, total, started); lastPaint = now; }
+      }
+      if (got < total) throw new Error("The connection dropped before the download finished.");
+      setProgress(got, total, started);
+      blobUrl = URL.createObjectURL(new Blob(chunks, { type: "application/x-msi" }));
+      controller = null;
+      $("[data-filename]").textContent = filename;
+      show("done");
+    } catch (err) {
+      const wasCancel = controller?.signal.aborted;
+      controller = null;
+      if (wasCancel) return;
+      $("[data-error]").textContent = err && err.message && !/fetch|network/i.test(err.message)
+        ? err.message
+        : "Your internet connection dropped. Tap Try again, or let your browser download it instead.";
+      show("error");
+    }
+  }
+
+  // "Install": hand the finished file to the browser so it lands in Downloads, ready to open.
+  $("[data-install]").addEventListener("click", () => {
+    if (!blobUrl) return;
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    $("[data-after-install]").hidden = false;
+  });
+
+  window.addEventListener("beforeunload", (e) => { if (controller) { e.preventDefault(); e.returnValue = ""; } });
+</script>
+
+<style>
+  .dl {
+    --os-green: #138a14;
+    --os-green-2: #1fb51f;
+    position: relative;
+    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2.5rem, 6vw, 4.5rem);
+    overflow: hidden;
+    background:
+      radial-gradient(60% 55% at 50% 22%, color-mix(in srgb, var(--os-green) 18%, transparent), transparent 70%),
+      var(--bg);
+  }
+  .dl__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  /* pulsing logo */
+  .dl__logo { position: relative; width: clamp(132px, 30vw, 184px); aspect-ratio: 1; margin-bottom: 1.6rem; }
+  .dl__logo img {
+    position: relative; width: 100%; height: 100%; border-radius: 28%;
+    background: #fff; box-shadow: 0 10px 40px rgb(19 138 20 / 35%);
+    animation: logo-pulse 2s ease-in-out infinite;
+  }
+  .dl__ring {
+    position: absolute; inset: 0; border-radius: 28%; border: 3px solid var(--os-green-2);
+    animation: ring 2s ease-out infinite;
+  }
+  .dl__ring--2 { animation-delay: 1s; }
+  @keyframes logo-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+  @keyframes ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.45); opacity: 0; } }
+
+  /* headline */
+  .dl__title {
+    max-width: 22ch; margin: 0 auto 1.8rem; font-size: clamp(1.75rem, 1rem + 4vw, 3.4rem);
+    font-weight: 900; line-height: 1.12; letter-spacing: -.025em; color: var(--ink);
+  }
+  .dl__kicker {
+    display: block; font-size: .62em; text-transform: uppercase; letter-spacing: .04em;
+    background: linear-gradient(90deg, var(--os-green), var(--os-green-2), var(--gold-bright), var(--os-green));
+    background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 6s linear infinite; margin-bottom: .2em;
+  }
+  @keyframes shine { to { background-position: 300% 0; } }
+  .dl__title mark {
+    background: linear-gradient(transparent 58%, color-mix(in srgb, var(--gold-bright) 55%, transparent) 58%);
+    color: inherit; padding-inline: .06em; white-space: nowrap;
+  }
+  .dl__brand { color: var(--os-green-2); }
+
+  /* pulsing download buttons */
+  .dl__buttons { display: grid; gap: 1rem; width: 100%; max-width: 920px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .dlb {
+    --c: var(--os-green);
+    display: flex; align-items: center; justify-content: center; gap: .8rem; min-height: 68px;
+    padding: .85rem 1.3rem; border-radius: 18px; border: 0; cursor: pointer; text-decoration: none;
+    color: #fff; background: var(--c); font: inherit; text-align: left;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 60%, transparent);
+    animation: btn-pulse 2.2s ease-out infinite;
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .dlb:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.08); }
+  .dlb svg { width: 30px; height: 30px; flex: none; }
+  .dlb span { display: flex; flex-direction: column; line-height: 1.15; }
+  .dlb small { font-size: .78rem; opacity: .9; font-weight: 500; }
+  .dlb b { font-size: 1.15rem; font-weight: 800; }
+  .dlb--android { --c: #138a14; }
+  .dlb--ios { --c: #111; animation-delay: .35s; }
+  .dlb--desktop { --c: #0a62c9; animation-delay: .7s; }
+  @keyframes btn-pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 55%, transparent); }
+    70% { box-shadow: 0 0 0 16px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+  :global(:root[data-theme="dark"]) .dlb--ios { --c: #2c2c2e; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .dlb--ios { --c: #2c2c2e; } }
+
+  .dl__note {
+    margin: 1.2rem auto 0; max-width: 52ch; padding: .8rem 1rem; border-radius: 12px;
+    background: var(--surface-2); border: 1px solid var(--line); font-size: .95rem;
+  }
+
+  /* dialogs */
+  .dlg {
+    width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto;
+    border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem 1.4rem 1.4rem;
+    background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgb(0 0 0 / 35%);
+  }
+  .dlg--wide { width: min(720px, calc(100vw - 32px)); }
+  .dlg::backdrop { background: rgb(10 10 8 / 60%); backdrop-filter: blur(3px); }
+  .dlg h2 { font-size: 1.35rem; padding-right: 2rem; }
+  .dlg__x {
+    position: absolute; top: .7rem; right: .8rem; width: 40px; height: 40px; border: 0; border-radius: 50%;
+    background: var(--surface-2); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer;
+  }
+  .dlg__row { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
+  .small { font-size: .88rem; }
+
+  .pick { display: grid; gap: .8rem; margin-top: 1rem; }
+  .pick__opt {
+    display: flex; align-items: center; gap: 1rem; padding: 1rem 1.1rem; border-radius: 14px; cursor: pointer;
+    border: 2px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; text-align: left;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .pick__opt:not(:disabled):hover { border-color: #0a62c9; transform: translateY(-1px); }
+  .pick__opt:disabled { opacity: .55; cursor: not-allowed; }
+  .pick__opt svg { width: 34px; height: 34px; flex: none; }
+  .pick__opt span { display: flex; flex-direction: column; }
+  .pick__opt small { color: var(--muted); }
+  .dl__phone { margin-top: 1rem; }
+
+  .bar { height: 16px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; margin-top: 1rem; }
+  .bar__fill {
+    display: block; height: 100%; width: 0; border-radius: inherit; transition: width .2s linear;
+    background: repeating-linear-gradient(45deg, #138a14 0 14px, #1fb51f 14px 28px);
+    background-size: 40px 40px; animation: stripes 1s linear infinite;
+  }
+  @keyframes stripes { to { background-position: 40px 0; } }
+  .bar__meta { display: flex; justify-content: space-between; font-weight: 700; margin: .45rem 0 .8rem; font-variant-numeric: tabular-nums; }
+
+  .dlb--install {
+    background: linear-gradient(135deg, #1fb51f, #138a14); color: #fff;
+    animation: btn-pulse 2.2s ease-out infinite; --c: #138a14;
+  }
+
+  .steps { padding-left: 1.2rem; margin: 1rem 0; }
+  .steps li { margin-bottom: 1rem; color: var(--ink-2); }
+  .steps b { color: var(--ink); }
+
+  /* drawn illustrations of the SmartScreen box (not real screenshots) */
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .8rem; margin-top: .8rem; }
+  .ss { margin: 0; }
+  .ss__win { background: #0b5cad; color: #fff; padding: .9rem; border-radius: 6px; font-family: "Segoe UI", system-ui, sans-serif; min-height: 150px; display: flex; flex-direction: column; }
+  .ss__h { color: #fff; font-size: 1.02rem; font-weight: 600; margin: 0 0 .4rem; }
+  .ss__t { color: #e6eef8; font-size: .78rem; margin: 0 0 .5rem; }
+  .ss__link { margin: 0; font-size: .8rem; color: #fff; text-decoration: underline; }
+  .ss__btns { margin-top: auto; display: flex; justify-content: flex-end; gap: .4rem; }
+  .ss__btn { border: 1px solid #fff; padding: .2rem .7rem; font-size: .78rem; }
+  .hl { outline: 3px solid #ffd400; outline-offset: 2px; border-radius: 2px; font-weight: 700; }
+  .ss figcaption { font-size: .85rem; margin-top: .4rem; color: var(--ink-2); }
+</style>

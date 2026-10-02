@@ -4,7 +4,6 @@ import Logo from "./Logo.astro";
 const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/apps", label: "Apps" },
   { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
 ];
@@ -39,7 +38,6 @@ const isCurrent = (href: string) =>
           </a>
         ))
       }
-      <a class="btn btn--gold" href="/apps/android" style="margin-left:.4rem">Download Apps</a>
     </nav>
   </div>
 </header>

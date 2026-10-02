@@ -39,3 +39,14 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# The old Apps pages were folded into the download section on the home page.
+[[redirects]]
+  from = "/apps"
+  to = "/#download"
+  status = 301
+
+[[redirects]]
+  from = "/apps/*"
+  to = "/#download"
+  status = 301

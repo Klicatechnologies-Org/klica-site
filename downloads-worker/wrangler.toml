@@ -1,0 +1,30 @@
+# Serves the OneSitting desktop installers from R2 for the download buttons on klicatech.com,
+# and counts every COMPLETED download per day in Firestore (website_downloads_daily/{date}).
+name = "onesitting-downloads"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "onesitting-downloads"
+
+# Per-IP spam protection: at most 3 download starts per IP per minute.
+[[ratelimits]]
+name = "DOWNLOAD_RL"
+namespace_id = "4101"
+simple = { limit = 3, period = 60 }
+
+[vars]
+FIREBASE_PROJECT_ID = "onesitting-jamb"
+STATS_COLLECTION = "website_downloads_daily"
+# The current Windows build. To ship a new one: upload it (scripts/upload.mjs) and change these three.
+WINDOWS_KEY = "windows/OneSitting-1.0.20.msi"
+WINDOWS_VERSION = "1.0.20"
+WINDOWS_SHA256 = "61c33bc007c049651108c34ceff41f43ee261161a9317fb4ad02fa52f9184f51"
+
+# Secrets (`wrangler secret put <NAME>`), never in this file:
+#   SA_EMAIL       Firestore service account email (same one the onesitting-entitlements Worker uses)
+#   SA_KEY         its PEM private key
+#   UPLOAD_SECRET  TEMPORARY - only while uploading an installer; delete it right after
+#                  (`wrangler secret delete UPLOAD_SECRET`). With it absent the upload routes do not exist.

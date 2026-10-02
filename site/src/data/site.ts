@@ -29,4 +29,17 @@ export const site = {
   playDeveloperUrl: 'https://play.google.com/store/apps/dev?id=KLICA+TECHNOLOGIES',
 } as const;
 
+// The OneSitting app on every platform.
+export const oneSitting = {
+  playUrl: 'https://play.google.com/store/apps/details?id=com.onesitting.jambcbtapp',
+  // Numeric App Store id of com.onesitting.jambcbtapp. This link opens the listing as soon as
+  // Apple approves the app; until then the button explains that it is in review.
+  appStoreId: '6810399615',
+  appStoreUrl: 'https://apps.apple.com/app/id6810399615',
+  // Cloudflare Worker (downloads-worker/) serving desktop installers from R2.
+  downloadsApi: 'https://onesitting-downloads.austinemishael.workers.dev',
+  windowsSizeBytes: 345401427,
+  macReady: false,
+} as const;
+
 export const whatsappUrl = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(site.whatsappMessage)}`;
