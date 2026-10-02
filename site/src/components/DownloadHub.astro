@@ -24,7 +24,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
         <span><small>Download for</small><b>Android</b></span>
       </a>
 
-      <a class="dlb dlb--ios" href={oneSitting.appStoreUrl} target="_blank" rel="noopener" data-dl="ios" data-app-store-id={oneSitting.appStoreId}>
+      <a class="dlb dlb--ios" href={oneSitting.appStoreUrl} target="_blank" rel="noopener" data-dl="ios">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.75c-.02-2.3 1.88-3.4 1.96-3.46a4.22 4.22 0 0 0-3.32-1.8c-1.41-.14-2.76.83-3.48.83s-1.82-.81-3-.79a4.43 4.43 0 0 0-3.74 2.27c-1.6 2.77-.41 6.86 1.15 9.1.76 1.1 1.67 2.33 2.86 2.29 1.15-.05 1.58-.74 2.97-.74s1.78.74 2.99.72c1.24-.02 2.02-1.12 2.77-2.22a9.86 9.86 0 0 0 1.26-2.58 3.98 3.98 0 0 1-2.42-3.62zM14.1 5.98A4 4 0 0 0 15.04 3a4.08 4.08 0 0 0-2.65 1.37 3.8 3.8 0 0 0-.96 2.88 3.37 3.37 0 0 0 2.67-1.27z"/></svg>
         <span><small>Download for</small><b>iPhone &amp; iPad</b></span>
       </a>
@@ -35,10 +35,6 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       </button>
     </div>
 
-    <p class="dl__note" data-ios-note hidden>
-      The iPhone version is in final review with Apple and will be on the App Store very soon.
-      This button will take you straight to it once it is live.
-    </p>
   </div>
 
   <!-- Desktop: choose a computer, then download with progress -->
@@ -95,7 +91,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       <p data-error>Something went wrong with the connection.</p>
       <div class="dlg__row">
         <button class="btn dlb--install" type="button" data-retry>Try again</button>
-        <a class="btn btn--ghost" data-direct href={`${oneSitting.downloadsApi}/windows`} rel="nofollow">Download with my browser instead</a>
+        <a class="btn btn--ghost" data-direct href="/download/windows" rel="nofollow">Download with my browser instead</a>
       </div>
     </div>
   </dialog>
@@ -140,28 +136,11 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   </dialog>
 </section>
 
-<script define:vars={{ api: oneSitting.downloadsApi, fallbackSize: oneSitting.windowsSizeBytes, appStoreId: oneSitting.appStoreId }}>
+<script define:vars={{ api: oneSitting.downloadsApi, fallbackSize: oneSitting.windowsSizeBytes, }}>
   const $ = (sel, root = document) => root.querySelector(sel);
   const desktop = $("#desktop-dialog");
   const howto = $("#howto-dialog");
   const isPhone = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-  // ---- iOS: until Apple approves the app, explain instead of opening an empty store page ----
-  const iosBtn = $('[data-dl="ios"]');
-  const iosNote = $("[data-ios-note]");
-  let iosLive = null; // null = unknown (keep the plain link), true/false once checked
-  window.__osIosLookup = (data) => { iosLive = !!(data && data.resultCount > 0); };
-  const lookup = document.createElement("script");
-  lookup.src = `https://itunes.apple.com/lookup?id=${appStoreId}&country=ng&callback=__osIosLookup`;
-  lookup.async = true;
-  document.head.appendChild(lookup);
-  iosBtn.addEventListener("click", (e) => {
-    if (iosLive === false) {
-      e.preventDefault();
-      iosNote.hidden = false;
-      iosNote.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  });
 
   // ---- dialogs ----
   const open = (d) => (d.showModal ? d.showModal() : d.setAttribute("open", ""));
@@ -262,78 +241,84 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
     --os-green: #138a14;
     --os-green-2: #1fb51f;
     position: relative;
-    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2.5rem, 6vw, 4.5rem);
+    /* the whole hub fits the first screen: viewport minus the 69px header */
+    min-height: calc(100svh - 69px);
+    display: flex; align-items: center;
+    padding-block: clamp(.75rem, 3vh, 2rem);
     overflow: hidden;
     background:
-      radial-gradient(60% 55% at 50% 22%, color-mix(in srgb, var(--os-green) 18%, transparent), transparent 70%),
+      radial-gradient(60% 55% at 50% 30%, color-mix(in srgb, var(--os-green) 16%, transparent), transparent 70%),
       var(--bg);
   }
-  .dl__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .dl__inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(1rem, 3.6vh, 2rem); }
 
   /* pulsing logo */
-  .dl__logo { position: relative; width: clamp(132px, 30vw, 184px); aspect-ratio: 1; margin-bottom: 1.6rem; }
+  .dl__logo { position: relative; width: clamp(84px, 17vh, 150px); aspect-ratio: 1; flex: none; }
   .dl__logo img {
-    position: relative; width: 100%; height: 100%; border-radius: 28%;
-    background: #fff; box-shadow: 0 10px 40px rgb(19 138 20 / 35%);
+    position: relative; width: 100%; height: 100%; border-radius: 26%;
+    background: #fff; box-shadow: 0 8px 28px rgb(19 138 20 / 35%);
     animation: logo-pulse 2s ease-in-out infinite;
   }
   .dl__ring {
-    position: absolute; inset: 0; border-radius: 28%; border: 3px solid var(--os-green-2);
+    position: absolute; inset: 0; border-radius: 26%; border: 3px solid var(--os-green-2);
     animation: ring 2s ease-out infinite;
   }
   .dl__ring--2 { animation-delay: 1s; }
-  @keyframes logo-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
-  @keyframes ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.45); opacity: 0; } }
+  @keyframes logo-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  @keyframes ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.35); opacity: 0; } }
 
   /* headline */
   .dl__title {
-    max-width: 22ch; margin: 0 auto 1.8rem; font-size: clamp(1.75rem, 1rem + 4vw, 3.4rem);
-    font-weight: 900; line-height: 1.12; letter-spacing: -.025em; color: var(--ink);
+    max-width: 30ch; margin: 0 auto; font-weight: 900; line-height: 1.15; letter-spacing: -.02em; color: var(--ink);
+    font-size: clamp(1.35rem, min(.8rem + 2.8vw, 5.4vh), 2.9rem);
   }
   .dl__kicker {
-    display: block; font-size: .62em; text-transform: uppercase; letter-spacing: .04em;
+    display: block; font-size: .8em; text-transform: uppercase; letter-spacing: .03em;
     background: linear-gradient(90deg, var(--os-green), var(--os-green-2), var(--gold-bright), var(--os-green));
     background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shine 6s linear infinite; margin-bottom: .2em;
+    animation: shine 6s linear infinite; margin-bottom: .15em;
   }
   @keyframes shine { to { background-position: 300% 0; } }
   .dl__title mark {
-    background: linear-gradient(transparent 58%, color-mix(in srgb, var(--gold-bright) 55%, transparent) 58%);
-    color: inherit; padding-inline: .06em; white-space: nowrap;
+    background: linear-gradient(transparent 60%, color-mix(in srgb, var(--gold-bright) 50%, transparent) 60%);
+    color: inherit; padding-inline: .05em; white-space: nowrap;
   }
   .dl__brand { color: var(--os-green-2); }
 
   /* pulsing download buttons */
-  .dl__buttons { display: grid; gap: 1rem; width: 100%; max-width: 920px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .dl__buttons { display: grid; gap: .75rem; width: 100%; max-width: 860px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 700px) {
+    .dl__buttons { grid-template-columns: 1fr; max-width: 340px; gap: .65rem; }
+    /* keep the last button clear of the floating WhatsApp bubble */
+    .dl { padding-bottom: 76px; }
+    .dl__inner { gap: clamp(.8rem, 2.6vh, 1.6rem); }
+    .dl__logo { width: clamp(72px, 12vh, 120px); }
+    .dlb { min-height: clamp(50px, 7.5vh, 60px); }
+  }
   .dlb {
     --c: var(--os-green);
-    display: flex; align-items: center; justify-content: center; gap: .8rem; min-height: 68px;
-    padding: .85rem 1.3rem; border-radius: 18px; border: 0; cursor: pointer; text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: clamp(52px, 8.5vh, 64px);
+    padding: .55rem 1rem; border-radius: 16px; border: 0; cursor: pointer; text-decoration: none;
     color: #fff; background: var(--c); font: inherit; text-align: left;
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 60%, transparent);
     animation: btn-pulse 2.2s ease-out infinite;
     transition: transform .15s ease, filter .15s ease;
   }
   .dlb:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.08); }
-  .dlb svg { width: 30px; height: 30px; flex: none; }
-  .dlb span { display: flex; flex-direction: column; line-height: 1.15; }
-  .dlb small { font-size: .78rem; opacity: .9; font-weight: 500; }
-  .dlb b { font-size: 1.15rem; font-weight: 800; }
+  .dlb svg { width: 26px; height: 26px; flex: none; }
+  .dlb span { display: flex; flex-direction: column; line-height: 1.1; }
+  .dlb small { font-size: .72rem; opacity: .9; font-weight: 500; }
+  .dlb b { font-size: 1.05rem; font-weight: 800; }
   .dlb--android { --c: #138a14; }
   .dlb--ios { --c: #111; animation-delay: .35s; }
   .dlb--desktop { --c: #0a62c9; animation-delay: .7s; }
   @keyframes btn-pulse {
     0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 55%, transparent); }
-    70% { box-shadow: 0 0 0 16px transparent; }
+    70% { box-shadow: 0 0 0 12px transparent; }
     100% { box-shadow: 0 0 0 0 transparent; }
   }
   :global(:root[data-theme="dark"]) .dlb--ios { --c: #2c2c2e; }
   @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .dlb--ios { --c: #2c2c2e; } }
-
-  .dl__note {
-    margin: 1.2rem auto 0; max-width: 52ch; padding: .8rem 1rem; border-radius: 12px;
-    background: var(--surface-2); border: 1px solid var(--line); font-size: .95rem;
-  }
 
   /* dialogs */
   .dlg {

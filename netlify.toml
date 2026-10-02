@@ -50,3 +50,12 @@
   from = "/apps/*"
   to = "/#download"
   status = 301
+
+# Download links live on klicatech.com and hand off to the downloads Worker (Cloudflare R2).
+# A redirect, not a proxy: the bytes never pass through Netlify (bandwidth), and the Worker's
+# per-IP rate limit sees the visitor's real IP.
+[[redirects]]
+  from = "/download/windows"
+  to = "https://onesitting-downloads.austinemishael.workers.dev/windows"
+  status = 302
+  force = true
