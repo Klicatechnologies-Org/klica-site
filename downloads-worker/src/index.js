@@ -127,8 +127,9 @@ async function download(request, env, ctx, platform, file) {
 
   // Count a download once its LAST byte has gone out: a plain full download, or the final part of a
   // download the browser resumed after a dropped connection (a ranged request reaching the end).
-  // Earlier parts of a resumed download, and cancelled downloads, are never counted.
-  const reachesEnd = first + length === object.size;
+  // Earlier parts of a resumed download, and cancelled downloads, are never counted. A ranged request
+  // under 1 MiB is a probe (download managers read the file's tail), not a resumed download.
+  const reachesEnd = first + length === object.size && (status === 200 || length >= 1048576);
   let sent = 0;
   let finish;
   const finished = new Promise((resolve) => { finish = resolve; });
