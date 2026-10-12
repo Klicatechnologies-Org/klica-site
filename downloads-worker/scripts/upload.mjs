@@ -36,11 +36,15 @@ for (let n = 1; n <= total; n++) {
   const len = Math.min(PART, size - (n - 1) * PART);
   const buf = Buffer.alloc(len);
   readSync(fd, buf, 0, len, (n - 1) * PART);
+  // Network drops are retried forever (waits grow to 2 min); only a server refusal (4xx, e.g. a wrong
+  // UPLOAD_SECRET) stops the upload, since waiting cannot fix that.
   for (let attempt = 1; ; attempt++) {
     const r = await fetch(q(`part?key=${k}&uploadId=${id}&part=${n}`), { method: 'PUT', headers: auth, body: buf }).catch((e) => ({ ok: false, status: `${e.message} ${e.cause?.code || e.cause?.message || ""}`, text: async () => "" }));
     if (r.ok) { state.parts.push(await r.json()); break; }
-    if (attempt >= 5) throw new Error(`part ${n}: ${r.status} ${await r.text()}`);
-    console.warn(`part ${n} failed (${r.status}), retrying`);
+    if (typeof r.status === 'number' && r.status >= 400 && r.status < 500) throw new Error(`part ${n}: ${r.status} ${await r.text()}`);
+    const wait = Math.min(120, 5 * 2 ** Math.min(attempt - 1, 5));
+    console.warn(`part ${n} failed (${r.status}), retry ${attempt} in ${wait}s`);
+    await new Promise((res) => setTimeout(res, wait * 1000));
   }
   writeFileSync(stateFile, JSON.stringify(state));
   console.log(`part ${n}/${total} uploaded`);
