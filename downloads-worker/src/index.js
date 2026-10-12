@@ -31,13 +31,20 @@ export default {
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
-        headers: { ...CORS, 'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS', 'Access-Control-Max-Age': '86400' },
+        headers: {
+          ...CORS,
+          'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+          'Access-Control-Allow-Headers': 'Authorization',
+          'Access-Control-Max-Age': '86400',
+        },
       });
     }
 
     if (path.startsWith('/_upload/')) return handleUpload(request, env, url, path);
 
     if (path === '/info' && request.method === 'GET') return info(env);
+
+    if (path === '/stats' && request.method === 'GET') return stats(request, env, url);
 
     const platform = path.slice(1);
     if (Object.hasOwn(PLATFORMS, platform) && (request.method === 'GET' || request.method === 'HEAD')) {
@@ -65,6 +72,16 @@ async function download(request, env, ctx, platform, file) {
   if (request.method === 'GET' && env.DOWNLOAD_RL) {
     const { success } = await env.DOWNLOAD_RL.limit({ key: `${platform}:${ip}` });
     if (!success) {
+      // A browser following the download link gets a readable page, not JSON.
+      if ((request.headers.get('Accept') || '').includes('text/html')) {
+        return new Response(
+          '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Please wait a minute</title>' +
+            '<body style="font:16px/1.6 system-ui,sans-serif;max-width:32rem;margin:15vh auto;padding:0 1rem">' +
+            '<h1 style="font-size:1.4rem">Please wait a minute</h1><p>Too many downloads were started from your network ' +
+            'just now. Wait a minute, then <a href="https://klicatech.com/">go back to klicatech.com</a> and try again.</p>',
+          { status: 429, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '60', 'Cache-Control': 'no-store' } },
+        );
+      }
       return json(
         { error: 'rate_limited', message: 'Too many downloads from your network. Please wait a minute and try again.' },
         429,
@@ -92,26 +109,32 @@ async function download(request, env, ctx, platform, file) {
     return new Response(null, { headers });
   }
 
-  // A ranged request is a resume or a download manager's chunk: serve it, but it is not one
-  // whole download, so it is never counted.
+  let status = 200;
+  let first = 0;
+  let length = object.size;
   if (range && object.range) {
-    const start = object.range.offset ?? 0;
-    const length = object.range.length ?? object.size - start;
-    headers.set('Content-Range', `bytes ${start}-${start + length - 1}/${object.size}`);
-    headers.set('Content-Length', String(length));
-    return new Response(object.body, { status: 206, headers });
+    if ('suffix' in object.range) {
+      length = Math.min(object.range.suffix, object.size);
+      first = object.size - length;
+    } else {
+      first = object.range.offset ?? 0;
+      length = object.range.length ?? object.size - first;
+    }
+    status = 206;
+    headers.set('Content-Range', `bytes ${first}-${first + length - 1}/${object.size}`);
   }
+  headers.set('Content-Length', String(length));
 
-  headers.set('Content-Length', String(object.size));
-
-  // Count the download only once every byte has gone out. If the visitor cancels, the pipe
-  // errors and nothing is recorded.
+  // Count a download once its LAST byte has gone out: a plain full download, or the final part of a
+  // download the browser resumed after a dropped connection (a ranged request reaching the end).
+  // Earlier parts of a resumed download, and cancelled downloads, are never counted.
+  const reachesEnd = first + length === object.size;
   let sent = 0;
   let finish;
   const finished = new Promise((resolve) => { finish = resolve; });
   const { readable, writable } = new TransformStream({
     transform(chunk, controller) { sent += chunk.byteLength; controller.enqueue(chunk); },
-    flush() { finish(sent === object.size); },
+    flush() { finish(reachesEnd && sent === length); },
   });
   object.body.pipeTo(writable).catch(() => finish(false));
   ctx.waitUntil(
@@ -120,7 +143,48 @@ async function download(request, env, ctx, platform, file) {
       .catch((e) => console.error('count failed', e)),
   );
 
-  return new Response(readable, { headers });
+  return new Response(readable, { status, headers });
+}
+
+// ---- Private stats for klicatech.com/stats: needs the STATS_KEY secret as a Bearer token ----
+
+async function stats(request, env, url) {
+  if (!env.STATS_KEY) return json({ error: 'not_found' }, 404);
+  // Slow down password guessing: the same per-IP limit as downloads.
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (env.DOWNLOAD_RL && !(await env.DOWNLOAD_RL.limit({ key: `stats:${ip}` })).success) {
+    return json({ error: 'rate_limited' }, 429, { 'Retry-After': '60' });
+  }
+  if (!timingSafeEqual(request.headers.get('Authorization') || '', `Bearer ${env.STATS_KEY}`)) {
+    return json({ error: 'unauthorized' }, 401);
+  }
+  const days = Math.min(366, Math.max(1, Number(url.searchParams.get('days')) || 30));
+  const res = await fetch(
+    `https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents:runQuery`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${await accessToken(env)}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        structuredQuery: {
+          from: [{ collectionId: env.STATS_COLLECTION }],
+          orderBy: [{ field: { fieldPath: 'date' }, direction: 'DESCENDING' }],
+          limit: days,
+        },
+      }),
+    },
+  );
+  if (!res.ok) return json({ error: 'firestore', status: res.status }, 502);
+  const int = (f) => Number(f?.integerValue ?? 0);
+  const rows = (await res.json())
+    .filter((r) => r.document)
+    .map(({ document: { fields: f } }) => ({
+      date: f.date?.stringValue,
+      total: int(f.total),
+      windows: int(f.windows),
+      mac: int(f.mac),
+      updatedAt: f.updatedAt?.timestampValue ?? null,
+    }));
+  return json({ today: lagosDate(), days: rows });
 }
 
 // ---- Firestore: website_downloads_daily/{YYYY-MM-DD in Lagos time} -------------------------

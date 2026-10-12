@@ -73,41 +73,22 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       </p>
     </div>
 
-    <div data-step="progress" hidden>
-      <h2>Downloading OneSitting for Windows</h2>
-      <p class="muted" data-status>Starting download&hellip;</p>
-      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Download progress">
-        <span class="bar__fill"></span>
-      </div>
-      <div class="bar__meta"><span data-pct>0%</span><span data-bytes></span></div>
-      <p class="muted small">Please keep this page open until the download finishes.</p>
-      <div class="dlg__row">
-        <button class="act act--ghost" type="button" data-cancel>Cancel</button>
-      </div>
-    </div>
-
-    <div data-step="done" hidden>
+    <div data-step="started" hidden>
       <div class="done__badge" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h2>Download complete</h2>
-      <p>Click <b>Install OneSitting</b> to save the installer to your computer, then open it to finish setting up.</p>
-      <div class="dlg__row">
-        <button class="act act--primary" type="button" data-install>Install OneSitting</button>
-        <button class="act act--ghost" type="button" data-howto>How to install</button>
-      </div>
-      <p class="muted small" data-after-install hidden>
-        Your browser has saved <b data-filename>the installer</b>. Click it in your browser&rsquo;s downloads
-        (top right in Chrome and Edge) or find it in your <b>Downloads</b> folder, then open it.
+      <h2>Your download has started</h2>
+      <p>
+        OneSitting for Windows (<span data-win-size>{windowsMb} MB</span>) is downloading. Follow it in your
+        browser&rsquo;s downloads &mdash; the <b>download arrow at the top right</b> in Chrome and Edge.
       </p>
-    </div>
-
-    <div data-step="error" hidden>
-      <h2>The download stopped</h2>
-      <p data-error>Something went wrong with the connection.</p>
+      <p class="note">
+        You can keep browsing or leave this page; the download carries on. If your connection drops, open your
+        browser&rsquo;s downloads and click <b>Resume</b>.
+      </p>
       <div class="dlg__row">
-        <button class="act act--primary" type="button" data-retry>Try again</button>
-        <a class="act act--ghost" data-direct href="/download/windows" rel="nofollow">Download with my browser instead</a>
+        <button class="act act--primary" type="button" data-howto>How to install</button>
+        <a class="act act--ghost" href="/download/windows" rel="nofollow" data-again>Didn&rsquo;t start? Download again</a>
       </div>
     </div>
   </dialog>
@@ -154,7 +135,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   </dialog>
 </section>
 
-<script define:vars={{ api: oneSitting.downloadsApi, fallbackSize: oneSitting.windowsSizeBytes, }}>
+<script define:vars={{ api: oneSitting.downloadsApi }}>
   const $ = (sel, root = document) => root.querySelector(sel);
   const desktop = $("#desktop-dialog");
   const howto = $("#howto-dialog");
@@ -177,98 +158,30 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   const show = (step) => desktop.querySelectorAll("[data-step]").forEach((s) => (s.hidden = s.dataset.step !== step));
 
   // The Worker knows which installer it serves; show its real version and size.
-  let liveSize = fallbackSize;
   fetch(`${api}/info`).then((r) => r.json()).then(({ windows: w }) => {
     if (!w) return;
-    liveSize = w.size;
+    $("[data-win-size]").textContent = `${Math.round(w.size / 1048576)} MB`;
     $("[data-win-meta]").textContent = `Windows 10 or 11 · version ${w.version} · ${Math.round(w.size / 1048576)} MB`;
   }).catch(() => {});
 
   $('[data-dl="desktop"]').addEventListener("click", () => {
-    if (!controller) show(blobUrl ? "done" : "choose");
+    show("choose");
     $("[data-phone-hint]").hidden = !isPhone;
     open(desktop);
   });
   $("[data-howto]").addEventListener("click", () => open(howto));
-  desktop.querySelector('[data-pick="windows"]').addEventListener("click", startWindows);
-  $("[data-retry]").addEventListener("click", startWindows);
-  $("[data-cancel]").addEventListener("click", () => { controller?.abort(); show("choose"); });
 
-  // ---- Windows download with a visible progress bar ----
-  let controller = null;
-  let blobUrl = null;
-  let filename = "OneSitting-Setup.msi";
-  const fill = $(".bar__fill");
-  const bar = $(".bar");
-  const mb = (n) => (n / 1048576).toFixed(n < 10485760 ? 1 : 0);
-
-  function setProgress(got, total, started) {
-    const pct = total ? Math.min(100, Math.floor((got / total) * 100)) : 0;
-    fill.style.width = pct + "%";
-    bar.setAttribute("aria-valuenow", String(pct));
-    $("[data-pct]").textContent = pct + "%";
-    const secs = (performance.now() - started) / 1000;
-    const speed = secs > 1 ? got / secs : 0;
-    const left = speed && total ? Math.max(0, Math.round((total - got) / speed)) : null;
-    $("[data-bytes]").textContent = `${mb(got)} MB of ${mb(total)} MB`;
-    $("[data-status]").textContent = left == null ? "Downloading…"
-      : `Downloading… about ${left > 90 ? Math.round(left / 60) + " min" : left + " sec"} left`;
-  }
-
-  async function startWindows() {
-    show("progress");
-    setProgress(0, liveSize, performance.now());
-    controller = new AbortController();
-    const started = performance.now();
-    try {
-      const res = await fetch(`${api}/windows`, { signal: controller.signal, cache: "no-store" });
-      if (res.status === 429) throw new Error("Too many downloads from your network right now. Please wait a minute and tap Try again.");
-      if (!res.ok || !res.body) throw new Error("The download is not available right now. Please try again in a moment.");
-      const total = Number(res.headers.get("Content-Length")) || liveSize;
-      const cd = res.headers.get("Content-Disposition") || "";
-      filename = (cd.match(/filename="?([^";]+)"?/) || [])[1] || filename;
-      const reader = res.body.getReader();
-      const chunks = [];
-      let got = 0;
-      let lastPaint = 0;
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        chunks.push(value);
-        got += value.byteLength;
-        const now = performance.now();
-        if (now - lastPaint > 200) { setProgress(got, total, started); lastPaint = now; }
-      }
-      if (got < total) throw new Error("The connection dropped before the download finished.");
-      setProgress(got, total, started);
-      blobUrl = URL.createObjectURL(new Blob(chunks, { type: "application/x-msi" }));
-      controller = null;
-      $("[data-filename]").textContent = filename;
-      show("done");
-    } catch (err) {
-      const wasCancel = controller?.signal.aborted;
-      controller = null;
-      if (wasCancel) return;
-      $("[data-error]").textContent = err && err.message && !/fetch|network/i.test(err.message)
-        ? err.message
-        : "Your internet connection dropped. Tap Try again, or let your browser download it instead.";
-      show("error");
-    }
-  }
-
-  // "Install": hand the finished file to the browser so it lands in Downloads, ready to open.
-  $("[data-install]").addEventListener("click", () => {
-    if (!blobUrl) return;
+  // The browser downloads the file itself, so it keeps going if the visitor leaves the page,
+  // shows its own progress, and can resume after a dropped connection.
+  desktop.querySelector('[data-pick="windows"]').addEventListener("click", () => {
     const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = filename;
+    a.href = `${api}/windows`;
+    a.rel = "nofollow";
     document.body.appendChild(a);
     a.click();
     a.remove();
-    $("[data-after-install]").hidden = false;
+    show("started");
   });
-
-  window.addEventListener("beforeunload", (e) => { if (controller) { e.preventDefault(); e.returnValue = ""; } });
 </script>
 
 <style>
@@ -433,20 +346,6 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   .pick__opt small { color: var(--muted); font-size: .84rem; }
   .pick__go { font-style: normal; font-size: 1.2rem; color: var(--muted); transition: transform .15s ease; }
   .pick__opt:hover .pick__go { transform: translateX(3px); color: var(--ink); }
-
-  .bar { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin-top: 1.1rem; }
-  .bar__fill {
-    display: block; height: 100%; width: 0; border-radius: inherit; transition: width .25s linear;
-    background: linear-gradient(90deg, var(--os), #2bb33a);
-    position: relative; overflow: hidden;
-  }
-  .bar__fill::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 35%), transparent);
-    transform: translateX(-100%); animation: sheen 1.6s ease-in-out infinite;
-  }
-  @keyframes sheen { to { transform: translateX(100%); } }
-  .bar__meta { display: flex; justify-content: space-between; font-weight: 600; font-size: .9rem; margin: .5rem 0 .9rem; font-variant-numeric: tabular-nums; }
 
   .done__badge {
     width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: .9rem;

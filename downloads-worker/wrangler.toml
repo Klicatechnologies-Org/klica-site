@@ -26,5 +26,6 @@ WINDOWS_SHA256 = "7ac4d0fc56136a5a7256a3d906017093c6f1af493f08ca775b25c9900cc4cd
 # Secrets (`wrangler secret put <NAME>`), never in this file:
 #   SA_EMAIL       Firestore service account email (same one the onesitting-entitlements Worker uses)
 #   SA_KEY         its PEM private key
+#   STATS_KEY      password for klicatech.com/stats (GET /stats); without it /stats is 404
 #   UPLOAD_SECRET  TEMPORARY - only while uploading an installer; delete it right after
 #                  (`wrangler secret delete UPLOAD_SECRET`). With it absent the upload routes do not exist.

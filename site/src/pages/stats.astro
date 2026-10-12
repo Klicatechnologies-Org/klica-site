@@ -1,0 +1,144 @@
+---
+// Private download counts for the owner. The numbers come from the downloads Worker's /stats,
+// which checks the password (Worker secret STATS_KEY) itself; this page holds no data.
+import Base from "../layouts/Base.astro";
+import { oneSitting } from "../data/site";
+---
+
+<Base title="Download stats" index={false}>
+  <section class="wrap st">
+    <form class="st__gate" data-gate>
+      <h1>Download stats</h1>
+      <p class="muted">Enter the stats password to see website downloads per day.</p>
+      <input type="password" name="key" autocomplete="current-password" placeholder="Password" required />
+      <label class="st__remember"><input type="checkbox" name="remember" /> Remember on this device</label>
+      <button class="act" type="submit">Show stats</button>
+      <p class="st__err" data-err hidden></p>
+    </form>
+
+    <div data-board hidden>
+      <div class="st__head">
+        <h1>Download stats</h1>
+        <div class="st__tools">
+          <span class="muted small" data-updated></span>
+          <button class="act act--ghost" type="button" data-refresh>Refresh</button>
+          <button class="act act--ghost" type="button" data-logout>Lock</button>
+        </div>
+      </div>
+      <p class="muted small">Completed Windows installer downloads from klicatech.com, by day (Lagos time).
+        Android and iPhone installs are in Play Console and App Store Connect.</p>
+
+      <div class="st__tiles">
+        <div class="tile"><span>Today</span><b data-k="today">0</b></div>
+        <div class="tile"><span>Yesterday</span><b data-k="yesterday">0</b></div>
+        <div class="tile"><span>Last 7 days</span><b data-k="d7">0</b></div>
+        <div class="tile"><span>Last 30 days</span><b data-k="d30">0</b></div>
+      </div>
+
+      <h2>Last 30 days</h2>
+      <div class="chart" data-chart role="img" aria-label="Downloads per day, last 30 days"></div>
+
+      <table class="st__table">
+        <thead><tr><th>Date</th><th>Windows</th><th>Total</th></tr></thead>
+        <tbody data-rows></tbody>
+      </table>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ api: oneSitting.downloadsApi }}>
+  const $ = (s) => document.querySelector(s);
+  const gate = $("[data-gate]");
+  const board = $("[data-board]");
+  const KEY = "klica-stats-key";
+  const store = { get: () => { try { return sessionStorage.getItem(KEY) || localStorage.getItem(KEY); } catch { return null; } },
+    set: (v, remember) => { try { (remember ? localStorage : sessionStorage).setItem(KEY, v); } catch {} },
+    clear: () => { try { sessionStorage.removeItem(KEY); localStorage.removeItem(KEY); } catch {} } };
+
+  const day = (iso, back) => { const d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() - back); return d.toISOString().slice(0, 10); };
+  const fmtDay = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+
+  async function load(key) {
+    const res = await fetch(`${api}/stats?days=60`, { headers: { Authorization: `Bearer ${key}` }, cache: "no-store" });
+    if (res.status === 401) throw new Error("Wrong password.");
+    if (res.status === 429) throw new Error("Too many tries. Wait a minute and try again.");
+    if (!res.ok) throw new Error("Could not load the stats right now.");
+    return res.json();
+  }
+
+  function render({ today, days }) {
+    const by = Object.fromEntries(days.map((d) => [d.date, d]));
+    const total = (iso) => by[iso]?.total ?? 0;
+    const sum = (n) => Array.from({ length: n }, (_, i) => total(day(today, i))).reduce((a, b) => a + b, 0);
+    $('[data-k="today"]').textContent = total(today);
+    $('[data-k="yesterday"]').textContent = total(day(today, 1));
+    $('[data-k="d7"]').textContent = sum(7);
+    $('[data-k="d30"]').textContent = sum(30);
+
+    const last30 = Array.from({ length: 30 }, (_, i) => day(today, 29 - i));
+    const max = Math.max(1, ...last30.map(total));
+    $("[data-chart]").innerHTML = last30.map((iso) =>
+      `<div class="bar" title="${fmtDay(iso)}: ${total(iso)}"><i style="height:${(total(iso) / max) * 100}%"></i></div>`).join("");
+
+    $("[data-rows]").innerHTML = days.length
+      ? days.slice(0, 30).map((d) => `<tr><td>${fmtDay(d.date)}</td><td>${d.windows}</td><td><b>${d.total}</b></td></tr>`).join("")
+      : `<tr><td colspan="3" class="muted">No completed downloads recorded yet.</td></tr>`;
+    $("[data-updated]").textContent = "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  async function show(key) {
+    render(await load(key));
+    gate.hidden = true;
+    board.hidden = false;
+  }
+
+  gate.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const key = gate.key.value.trim();
+    const err = $("[data-err]");
+    err.hidden = true;
+    try {
+      await show(key);
+      store.set(key, gate.remember.checked);
+    } catch (x) { err.textContent = x.message; err.hidden = false; }
+  });
+  $("[data-refresh]").addEventListener("click", () => show(store.get()).catch((x) => alert(x.message)));
+  $("[data-logout]").addEventListener("click", () => { store.clear(); location.reload(); });
+
+  const saved = store.get();
+  if (saved) show(saved).catch(() => store.clear());
+</script>
+
+<style>
+  .st { padding-block: clamp(2rem, 6vh, 4rem); min-height: calc(100svh - 69px); }
+  .st__gate { max-width: 380px; margin: 8vh auto 0; display: grid; gap: .8rem; }
+  .st__gate h1, .st__head h1 { font-size: 1.8rem; margin: 0; }
+  .st__gate input[type="password"] {
+    min-height: 46px; padding: .6rem .9rem; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink); font: inherit;
+  }
+  .st__remember { display: flex; gap: .5rem; align-items: center; font-size: .9rem; color: var(--ink-2); }
+  .st__err { color: #c0392b; margin: 0; }
+  .act {
+    min-height: 44px; padding: .6rem 1.1rem; border-radius: 12px; font: 600 .95rem/1.2 inherit; cursor: pointer;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
+  }
+  .act--ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+  .small { font-size: .86rem; }
+
+  .st__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .5rem; }
+  .st__tools { display: flex; align-items: center; gap: .5rem; }
+  .st__tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin: 1.2rem 0 2rem; }
+  .tile { padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+  .tile span { display: block; color: var(--muted); font-size: .85rem; }
+  .tile b { font-size: 2rem; font-variant-numeric: tabular-nums; }
+  h2 { font-size: 1.15rem; }
+
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 140px; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  .chart .bar { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+  .chart .bar i { width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; background: #12801a; }
+
+  .st__table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-variant-numeric: tabular-nums; }
+  .st__table th, .st__table td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid var(--line); }
+  .st__table th { color: var(--muted); font-weight: 600; font-size: .85rem; }
+</style>

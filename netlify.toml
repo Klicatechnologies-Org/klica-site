@@ -34,6 +34,13 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
+# The owner's private download stats page: keep it out of search engines.
+[[headers]]
+  for = "/stats"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
 # Immutable hashed assets can be cached hard.
 [[headers]]
   for = "/_astro/*"

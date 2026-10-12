@@ -7,6 +7,6 @@ export default defineConfig({
   site: 'https://klicatech.com',
   output: 'static',
   trailingSlash: 'ignore',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/stats') })],
   build: { inlineStylesheets: 'auto' },
 });
