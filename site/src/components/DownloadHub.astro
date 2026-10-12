@@ -4,57 +4,72 @@ import { oneSitting } from "../data/site";
 const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
 ---
 
-<section class="dl" id="download">
-  <div class="wrap dl__inner">
-    <div class="dl__logo" aria-hidden="true">
-      <span class="dl__ring"></span>
-      <span class="dl__ring dl__ring--2"></span>
-      <img src="/onesitting-logo.webp" alt="" width="192" height="192" />
+<section class="hub" id="download">
+  <div class="hub__bg" aria-hidden="true"></div>
+
+  <div class="wrap hub__inner">
+    <div class="hub__icon">
+      <img src="/onesitting-logo.webp" alt="OneSitting app icon" width="192" height="192" />
     </div>
 
-    <h1 class="dl__title">
-      Download the OneSitting app today to pass JAMB 2027, WAEC 2027 and POST UTME 2027 at one sitting
+    <p class="hub__eyebrow"><span class="dot" aria-hidden="true"></span>JAMB &middot; WAEC &middot; Post-UTME 2027</p>
+
+    <h1 class="hub__title">
+      Pass your 2027 exams <em>at one sitting.</em>
     </h1>
 
-    <div class="dl__buttons">
-      <a class="dlb dlb--android" href={oneSitting.playUrl} target="_blank" rel="noopener" data-dl="android">
+    <p class="hub__lede">
+      Download the OneSitting app today to prepare for JAMB 2027, WAEC 2027 and POST UTME 2027 &mdash;
+      CBT practice, past questions and video classes on your phone or laptop.
+    </p>
+
+    <div class="hub__buttons" data-buttons>
+      <a class="store" href={oneSitting.playUrl} target="_blank" rel="noopener" data-dl="android">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 1 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25A1.25 1.25 0 1 1 8.25 14 1.25 1.25 0 0 1 7 15.25zm10 0A1.25 1.25 0 1 1 18.25 14 1.25 1.25 0 0 1 17 15.25z"/></svg>
-        <span><small>Download for</small><b>Android</b></span>
+        <span><small>Get it on</small><b>Google Play</b></span>
       </a>
 
-      <a class="dlb dlb--ios" href={oneSitting.appStoreUrl} target="_blank" rel="noopener" data-dl="ios">
+      <a class="store" href={oneSitting.appStoreUrl} target="_blank" rel="noopener" data-dl="ios">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.75c-.02-2.3 1.88-3.4 1.96-3.46a4.22 4.22 0 0 0-3.32-1.8c-1.41-.14-2.76.83-3.48.83s-1.82-.81-3-.79a4.43 4.43 0 0 0-3.74 2.27c-1.6 2.77-.41 6.86 1.15 9.1.76 1.1 1.67 2.33 2.86 2.29 1.15-.05 1.58-.74 2.97-.74s1.78.74 2.99.72c1.24-.02 2.02-1.12 2.77-2.22a9.86 9.86 0 0 0 1.26-2.58 3.98 3.98 0 0 1-2.42-3.62zM14.1 5.98A4 4 0 0 0 15.04 3a4.08 4.08 0 0 0-2.65 1.37 3.8 3.8 0 0 0-.96 2.88 3.37 3.37 0 0 0 2.67-1.27z"/></svg>
-        <span><small>Download for</small><b>iPhone &amp; iPad</b></span>
+        <span><small>Download on the</small><b>App Store</b></span>
       </a>
 
-      <button class="dlb dlb--desktop" type="button" data-dl="desktop" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 14.5zM5 5v9h14V5zM1 18h22v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2z"/></svg>
-        <span><small>Download for</small><b>Laptop / Desktop</b></span>
+      <button class="store" type="button" data-dl="desktop" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3zm8.5-1.25L21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zm8.5 0H21V21l-9.5-1.3z"/></svg>
+        <span><small>Download for</small><b>Windows PC</b></span>
       </button>
     </div>
 
+    <ul class="hub__facts">
+      <li>Free to download</li>
+      <li>Android, iPhone &amp; iPad</li>
+      <li>Windows 10 &amp; 11 laptops</li>
+    </ul>
   </div>
 
   <!-- Desktop: choose a computer, then download with progress -->
   <dialog class="dlg" id="desktop-dialog" aria-labelledby="desktop-title">
-    <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+    <button class="dlg__x" type="button" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
 
     <div data-step="choose">
       <h2 id="desktop-title">Download for your computer</h2>
-      <p class="muted">Pick the kind of computer you are using.</p>
+      <p class="muted">Choose the kind of computer you are using.</p>
       <div class="pick">
         <button class="pick__opt" type="button" data-pick="windows">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3zm8.5-1.25L21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zm8.5 0H21V21l-9.5-1.3z"/></svg>
-          <span><b>Windows laptop or PC</b><small>Windows 10 or 11 &middot; {windowsMb} MB</small></span>
+          <span><b>Windows laptop or PC</b><small data-win-meta>Windows 10 or 11 &middot; version {oneSitting.windowsVersion} &middot; {windowsMb} MB</small></span>
+          <i class="pick__go" aria-hidden="true">&rarr;</i>
         </button>
         <button class="pick__opt" type="button" data-pick="mac" disabled={!oneSitting.macReady}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.75c-.02-2.3 1.88-3.4 1.96-3.46a4.22 4.22 0 0 0-3.32-1.8c-1.41-.14-2.76.83-3.48.83s-1.82-.81-3-.79a4.43 4.43 0 0 0-3.74 2.27c-1.6 2.77-.41 6.86 1.15 9.1.76 1.1 1.67 2.33 2.86 2.29 1.15-.05 1.58-.74 2.97-.74s1.78.74 2.99.72c1.24-.02 2.02-1.12 2.77-2.22a9.86 9.86 0 0 0 1.26-2.58 3.98 3.98 0 0 1-2.42-3.62zM14.1 5.98A4 4 0 0 0 15.04 3a4.08 4.08 0 0 0-2.65 1.37 3.8 3.8 0 0 0-.96 2.88 3.37 3.37 0 0 0 2.67-1.27z"/></svg>
-          <span><b>MacBook / Mac</b><small>{oneSitting.macReady ? "macOS" : "Coming soon"}</small></span>
+          <span><b>MacBook or iMac</b><small>{oneSitting.macReady ? "macOS" : "Coming soon"}</small></span>
         </button>
       </div>
-      <p class="dl__phone muted" data-phone-hint hidden>
+      <p class="note" data-phone-hint hidden>
         You seem to be on a phone. This download is for laptops and desktop computers &mdash; on your
-        phone, use the Android or iPhone button instead.
+        phone, use the Google Play or App Store button instead.
       </p>
     </div>
 
@@ -67,16 +82,19 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       <div class="bar__meta"><span data-pct>0%</span><span data-bytes></span></div>
       <p class="muted small">Please keep this page open until the download finishes.</p>
       <div class="dlg__row">
-        <button class="btn btn--ghost" type="button" data-cancel>Cancel</button>
+        <button class="act act--ghost" type="button" data-cancel>Cancel</button>
       </div>
     </div>
 
     <div data-step="done" hidden>
-      <h2>Download complete 🎉</h2>
-      <p>Tap <b>Install</b> to save the installer to your computer, then open it to finish setting up OneSitting.</p>
+      <div class="done__badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Download complete</h2>
+      <p>Click <b>Install OneSitting</b> to save the installer to your computer, then open it to finish setting up.</p>
       <div class="dlg__row">
-        <button class="btn dlb--install" type="button" data-install>Install OneSitting</button>
-        <button class="btn btn--ghost" type="button" data-howto>Learn how to install the app</button>
+        <button class="act act--primary" type="button" data-install>Install OneSitting</button>
+        <button class="act act--ghost" type="button" data-howto>How to install</button>
       </div>
       <p class="muted small" data-after-install hidden>
         Your browser has saved <b data-filename>the installer</b>. Click it in your browser&rsquo;s downloads
@@ -88,19 +106,21 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       <h2>The download stopped</h2>
       <p data-error>Something went wrong with the connection.</p>
       <div class="dlg__row">
-        <button class="btn dlb--install" type="button" data-retry>Try again</button>
-        <a class="btn btn--ghost" data-direct href="/download/windows" rel="nofollow">Download with my browser instead</a>
+        <button class="act act--primary" type="button" data-retry>Try again</button>
+        <a class="act act--ghost" data-direct href="/download/windows" rel="nofollow">Download with my browser instead</a>
       </div>
     </div>
   </dialog>
 
   <!-- How to install on Windows -->
   <dialog class="dlg dlg--wide" id="howto-dialog" aria-labelledby="howto-title">
-    <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+    <button class="dlg__x" type="button" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
     <h2 id="howto-title">How to install OneSitting on Windows</h2>
     <ol class="steps">
       <li>
-        <b>Open the installer.</b> Click <i>OneSitting-Setup.msi</i> in your browser&rsquo;s downloads list,
+        <b>Open the installer.</b> Click the OneSitting <i>.msi</i> file in your browser&rsquo;s downloads list,
         or double-click it in your <b>Downloads</b> folder.
       </li>
       <li>
@@ -130,7 +150,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
       <li><b>Follow the installer.</b> Click <b>Next</b> / <b>Install</b> and wait a few seconds for it to finish.</li>
       <li><b>Start OneSitting.</b> Open the Start menu, type <b>OneSitting</b> and press Enter. Good luck in your exams!</li>
     </ol>
-    <p class="muted small">Need help? Chat with us on WhatsApp &mdash; the link is at the bottom of this page.</p>
+    <p class="muted small">Need help? Tap the green WhatsApp button to chat with us.</p>
   </dialog>
 </section>
 
@@ -138,7 +158,16 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   const $ = (sel, root = document) => root.querySelector(sel);
   const desktop = $("#desktop-dialog");
   const howto = $("#howto-dialog");
-  const isPhone = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+  const isPhone = isIOS || isAndroid || /Mobile/i.test(ua);
+
+  // ---- the button for this visitor's device leads, filled; the others stay outlined ----
+  const mine = isIOS ? "ios" : isAndroid ? "android" : /Windows/i.test(ua) ? "desktop" : "android";
+  const lead = $(`[data-dl="${mine}"]`);
+  lead.classList.add("store--primary");
+  $("[data-buttons]").prepend(lead);
 
   // ---- dialogs ----
   const open = (d) => (d.showModal ? d.showModal() : d.setAttribute("open", ""));
@@ -146,6 +175,14 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
     d.addEventListener("click", (e) => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
   });
   const show = (step) => desktop.querySelectorAll("[data-step]").forEach((s) => (s.hidden = s.dataset.step !== step));
+
+  // The Worker knows which installer it serves; show its real version and size.
+  let liveSize = fallbackSize;
+  fetch(`${api}/info`).then((r) => r.json()).then(({ windows: w }) => {
+    if (!w) return;
+    liveSize = w.size;
+    $("[data-win-meta]").textContent = `Windows 10 or 11 · version ${w.version} · ${Math.round(w.size / 1048576)} MB`;
+  }).catch(() => {});
 
   $('[data-dl="desktop"]').addEventListener("click", () => {
     if (!controller) show(blobUrl ? "done" : "choose");
@@ -180,14 +217,14 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
 
   async function startWindows() {
     show("progress");
-    setProgress(0, fallbackSize, performance.now());
+    setProgress(0, liveSize, performance.now());
     controller = new AbortController();
     const started = performance.now();
     try {
       const res = await fetch(`${api}/windows`, { signal: controller.signal, cache: "no-store" });
       if (res.status === 429) throw new Error("Too many downloads from your network right now. Please wait a minute and tap Try again.");
       if (!res.ok || !res.body) throw new Error("The download is not available right now. Please try again in a moment.");
-      const total = Number(res.headers.get("Content-Length")) || fallbackSize;
+      const total = Number(res.headers.get("Content-Length")) || liveSize;
       const cd = res.headers.get("Content-Disposition") || "";
       filename = (cd.match(/filename="?([^";]+)"?/) || [])[1] || filename;
       const reader = res.body.getReader();
@@ -235,119 +272,187 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
 </script>
 
 <style>
-  .dl {
-    --os-green: #138a14;
-    --os-green-2: #1fb51f;
-    position: relative;
+  .hub {
+    --os: #12801a;          /* OneSitting green, readable on light */
+    --os-ink: #0d5c13;
+    --accent: #12801a;
+    --display: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif: "Instrument Serif", ui-serif, Georgia, serif;
+    position: relative; isolation: isolate; overflow: hidden;
     /* the whole hub fits the first screen: viewport minus the 69px header */
     min-height: calc(100svh - 69px);
     display: flex; align-items: center;
-    padding-block: clamp(.75rem, 3vh, 2rem);
-    overflow: hidden;
+    padding-block: clamp(1rem, 4vh, 3rem);
+  }
+  :global(:root[data-theme="dark"]) .hub { --accent: #5ad06a; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .hub { --accent: #5ad06a; } }
+
+  /* quiet backdrop: two soft light pools and a faint dot grid that fades out at the edges */
+  .hub__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .hub__bg::before {
+    content: ""; position: absolute; inset: 0;
     background:
-      radial-gradient(60% 55% at 50% 30%, color-mix(in srgb, var(--os-green) 16%, transparent), transparent 70%),
-      var(--bg);
+      radial-gradient(45% 40% at 50% 18%, color-mix(in srgb, var(--os) 18%, transparent), transparent 70%),
+      radial-gradient(35% 30% at 85% 95%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 70%);
   }
-  .dl__inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(1rem, 3.6vh, 2rem); }
-
-  /* pulsing logo */
-  .dl__logo { position: relative; width: clamp(84px, 17vh, 150px); aspect-ratio: 1; flex: none; }
-  .dl__logo img {
-    position: relative; width: 100%; height: 100%; border-radius: 26%;
-    background: #fff; box-shadow: 0 8px 28px rgb(19 138 20 / 35%);
-    animation: logo-pulse 2s ease-in-out infinite;
-  }
-  .dl__ring {
-    position: absolute; inset: 0; border-radius: 26%; border: 3px solid var(--os-green-2);
-    animation: ring 2s ease-out infinite;
-  }
-  .dl__ring--2 { animation-delay: 1s; }
-  @keyframes logo-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-  @keyframes ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.35); opacity: 0; } }
-
-  /* headline */
-  .dl__title {
-    max-width: 30ch; margin: 0 auto; font-weight: 700; line-height: 1.25; color: var(--ink);
-    font-size: clamp(1.35rem, min(.8rem + 2.8vw, 5.4vh), 2.9rem);
+  .hub__bg::after {
+    content: ""; position: absolute; inset: 0; opacity: .5;
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 14%, transparent) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(60% 55% at 50% 40%, #000, transparent 80%);
   }
 
-  /* pulsing download buttons */
-  .dl__buttons { display: grid; gap: .75rem; width: 100%; max-width: 860px; grid-template-columns: repeat(3, 1fr); }
+  .hub__inner {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: clamp(.7rem, 2.2vh, 1.25rem);
+  }
+
+  /* app icon with a slow, soft halo */
+  .hub__icon { position: relative; width: clamp(68px, 11vh, 104px); aspect-ratio: 1; margin-bottom: clamp(.2rem, 1vh, .6rem); }
+  .hub__icon::before {
+    content: ""; position: absolute; inset: -30%; border-radius: 50%; z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--os) 45%, transparent), transparent);
+    animation: halo 4.5s ease-in-out infinite;
+  }
+  .hub__icon img {
+    width: 100%; height: 100%; border-radius: 23%; background: #fff;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent), 0 12px 32px rgb(0 0 0 / 22%);
+  }
+  @keyframes halo { 0%, 100% { opacity: .55; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.05); } }
+
+  .hub__eyebrow {
+    display: inline-flex; align-items: center; gap: .55rem; margin: 0;
+    padding: .38rem .85rem; border-radius: 999px; border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    font: 600 .74rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+
+  .hub__title {
+    margin: 0; max-width: 16ch;
+    font-family: var(--display); font-weight: 800; letter-spacing: -.035em; line-height: 1.02;
+    font-size: clamp(2.1rem, min(1rem + 4.6vw, 8.2vh), 4.6rem);
+    color: var(--ink); text-wrap: balance;
+  }
+  .hub__title em {
+    display: block; font-family: var(--serif); font-style: italic; font-weight: 400;
+    letter-spacing: -.01em; color: var(--accent);
+  }
+
+  .hub__lede {
+    margin: 0; max-width: 56ch; color: var(--muted); text-wrap: pretty;
+    font-size: clamp(.95rem, min(.85rem + .45vw, 2.3vh), 1.12rem); line-height: 1.6;
+  }
+
+  /* store-style buttons: equal weight, the visitor's own platform filled */
+  .hub__buttons {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem;
+    width: 100%; max-width: 720px; margin-top: clamp(.3rem, 1.4vh, .9rem);
+  }
+  .store {
+    display: flex; align-items: center; justify-content: center; gap: .7rem;
+    min-height: clamp(54px, 7.6vh, 62px); padding: .55rem 1.1rem; border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+    background: var(--surface); color: var(--ink); font: inherit; text-align: left;
+    text-decoration: none; cursor: pointer;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .store:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--ink) 34%, transparent); box-shadow: 0 10px 24px rgb(0 0 0 / 14%); }
+  .store:active { transform: translateY(0); }
+  .store svg { width: 24px; height: 24px; flex: none; }
+  .store span { display: flex; flex-direction: column; line-height: 1.15; }
+  .store small { font-size: .7rem; font-weight: 500; opacity: .72; letter-spacing: .01em; }
+  .store b { font-family: var(--display); font-size: 1.06rem; font-weight: 700; letter-spacing: -.01em; }
+  .store--primary {
+    background: var(--ink); color: var(--bg); border-color: var(--ink);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 22%, transparent);
+  }
+  .store--primary:hover { border-color: var(--ink); box-shadow: 0 14px 34px color-mix(in srgb, var(--ink) 30%, transparent); }
+
+  .hub__facts {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1.4rem;
+    list-style: none; margin: clamp(.1rem, .8vh, .5rem) 0 0; padding: 0;
+    font-size: .84rem; color: var(--muted);
+  }
+  .hub__facts li { display: inline-flex; align-items: center; gap: .4rem; }
+  .hub__facts li::before {
+    content: ""; width: 14px; height: 14px; flex: none; background: var(--accent);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
   @media (max-width: 700px) {
-    .dl__buttons { grid-template-columns: 1fr; max-width: 340px; gap: .65rem; }
-    /* keep the last button clear of the floating WhatsApp bubble */
-    .dl { padding-bottom: 76px; }
-    .dl__inner { gap: clamp(.8rem, 2.6vh, 1.6rem); }
-    .dl__logo { width: clamp(72px, 12vh, 120px); }
-    .dlb { min-height: clamp(50px, 7.5vh, 60px); }
+    .hub { padding-bottom: 84px; } /* clear of the floating WhatsApp bubble */
+    .hub__buttons { grid-template-columns: 1fr; max-width: 340px; gap: .6rem; }
+    .hub__title { max-width: 13ch; }
+    .hub__facts { display: none; } /* would sit under the WhatsApp bubble; the lede already says it */
   }
-  .dlb {
-    --c: var(--os-green);
-    display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: clamp(52px, 8.5vh, 64px);
-    padding: .55rem 1rem; border-radius: 16px; border: 0; cursor: pointer; text-decoration: none;
-    color: #fff; background: var(--c); font: inherit; text-align: left;
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 60%, transparent);
-    animation: btn-pulse 2.2s ease-out infinite;
-    transition: transform .15s ease, filter .15s ease;
-  }
-  .dlb:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.08); }
-  .dlb svg { width: 26px; height: 26px; flex: none; }
-  .dlb span { display: flex; flex-direction: column; line-height: 1.1; }
-  .dlb small { font-size: .72rem; opacity: .9; font-weight: 500; }
-  .dlb b { font-size: 1.05rem; font-weight: 800; }
-  .dlb--android { --c: #138a14; }
-  .dlb--ios { --c: #111; animation-delay: .35s; }
-  .dlb--desktop { --c: #0a62c9; animation-delay: .7s; }
-  @keyframes btn-pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 55%, transparent); }
-    70% { box-shadow: 0 0 0 12px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-  :global(:root[data-theme="dark"]) .dlb--ios { --c: #2c2c2e; }
-  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .dlb--ios { --c: #2c2c2e; } }
 
-  /* dialogs */
+  /* ---- dialogs ---- */
   .dlg {
-    width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto;
-    border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem 1.4rem 1.4rem;
-    background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgb(0 0 0 / 35%);
+    width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto;
+    border: 1px solid var(--line); border-radius: 20px; padding: 1.75rem 1.5rem 1.5rem;
+    background: var(--surface); color: var(--ink); box-shadow: 0 40px 100px rgb(0 0 0 / 35%);
   }
-  .dlg--wide { width: min(720px, calc(100vw - 32px)); }
-  .dlg::backdrop { background: rgb(10 10 8 / 60%); backdrop-filter: blur(3px); }
-  .dlg h2 { font-size: 1.35rem; padding-right: 2rem; }
+  .dlg[open] { animation: rise .22s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+  .dlg--wide { width: min(700px, calc(100vw - 32px)); }
+  .dlg::backdrop { background: rgb(8 8 6 / 55%); backdrop-filter: blur(4px); }
+  .dlg h2 { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; padding-right: 2.5rem; margin-bottom: .35rem; }
   .dlg__x {
-    position: absolute; top: .7rem; right: .8rem; width: 40px; height: 40px; border: 0; border-radius: 50%;
-    background: var(--surface-2); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer;
+    position: absolute; top: .9rem; right: .9rem; width: 36px; height: 36px; display: grid; place-items: center;
+    border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--muted); cursor: pointer;
   }
-  .dlg__row { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
-  .small { font-size: .88rem; }
+  .dlg__x:hover { color: var(--ink); border-color: var(--muted); }
+  .dlg__x svg { width: 16px; height: 16px; }
+  .dlg__row { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.1rem; }
+  .small { font-size: .86rem; }
+  .note { margin: 1rem 0 0; padding: .75rem .9rem; border-radius: 12px; background: var(--surface-2); font-size: .9rem; color: var(--ink-2); }
 
-  .pick { display: grid; gap: .8rem; margin-top: 1rem; }
+  .act {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .65rem 1.2rem;
+    border-radius: 12px; font: 600 .95rem/1.2 var(--display); text-decoration: none; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .act:hover { transform: translateY(-1px); border-color: var(--muted); }
+  .act--primary { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .act--primary:hover { border-color: var(--ink); }
+
+  .pick { display: grid; gap: .65rem; margin-top: 1.1rem; }
   .pick__opt {
-    display: flex; align-items: center; gap: 1rem; padding: 1rem 1.1rem; border-radius: 14px; cursor: pointer;
-    border: 2px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; text-align: left;
-    transition: border-color .15s ease, transform .15s ease;
+    display: flex; align-items: center; gap: .95rem; padding: .95rem 1rem; border-radius: 14px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; text-align: left;
+    transition: border-color .15s ease, background .15s ease;
   }
-  .pick__opt:not(:disabled):hover { border-color: #0a62c9; transform: translateY(-1px); }
-  .pick__opt:disabled { opacity: .55; cursor: not-allowed; }
-  .pick__opt svg { width: 34px; height: 34px; flex: none; }
-  .pick__opt span { display: flex; flex-direction: column; }
-  .pick__opt small { color: var(--muted); }
-  .dl__phone { margin-top: 1rem; }
+  .pick__opt:not(:disabled):hover { border-color: var(--ink); background: var(--surface-2); }
+  .pick__opt:disabled { opacity: .5; cursor: not-allowed; }
+  .pick__opt svg { width: 28px; height: 28px; flex: none; }
+  .pick__opt span { display: flex; flex-direction: column; flex: 1; }
+  .pick__opt b { font-family: var(--display); font-weight: 700; }
+  .pick__opt small { color: var(--muted); font-size: .84rem; }
+  .pick__go { font-style: normal; font-size: 1.2rem; color: var(--muted); transition: transform .15s ease; }
+  .pick__opt:hover .pick__go { transform: translateX(3px); color: var(--ink); }
 
-  .bar { height: 16px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; margin-top: 1rem; }
+  .bar { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin-top: 1.1rem; }
   .bar__fill {
-    display: block; height: 100%; width: 0; border-radius: inherit; transition: width .2s linear;
-    background: repeating-linear-gradient(45deg, #138a14 0 14px, #1fb51f 14px 28px);
-    background-size: 40px 40px; animation: stripes 1s linear infinite;
+    display: block; height: 100%; width: 0; border-radius: inherit; transition: width .25s linear;
+    background: linear-gradient(90deg, var(--os), #2bb33a);
+    position: relative; overflow: hidden;
   }
-  @keyframes stripes { to { background-position: 40px 0; } }
-  .bar__meta { display: flex; justify-content: space-between; font-weight: 700; margin: .45rem 0 .8rem; font-variant-numeric: tabular-nums; }
+  .bar__fill::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 35%), transparent);
+    transform: translateX(-100%); animation: sheen 1.6s ease-in-out infinite;
+  }
+  @keyframes sheen { to { transform: translateX(100%); } }
+  .bar__meta { display: flex; justify-content: space-between; font-weight: 600; font-size: .9rem; margin: .5rem 0 .9rem; font-variant-numeric: tabular-nums; }
 
-  .dlb--install {
-    background: linear-gradient(135deg, #1fb51f, #138a14); color: #fff;
-    animation: btn-pulse 2.2s ease-out infinite; --c: #138a14;
+  .done__badge {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: .9rem;
+    color: #fff; background: var(--os); box-shadow: 0 0 0 6px color-mix(in srgb, var(--os) 18%, transparent);
   }
+  .done__badge svg { width: 26px; height: 26px; }
 
   .steps { padding-left: 1.2rem; margin: 1rem 0; }
   .steps li { margin-bottom: 1rem; color: var(--ink-2); }
@@ -356,7 +461,7 @@ const windowsMb = Math.round(oneSitting.windowsSizeBytes / 1024 / 1024);
   /* drawn illustrations of the SmartScreen box (not real screenshots) */
   .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .8rem; margin-top: .8rem; }
   .ss { margin: 0; }
-  .ss__win { background: #0b5cad; color: #fff; padding: .9rem; border-radius: 6px; font-family: "Segoe UI", system-ui, sans-serif; min-height: 150px; display: flex; flex-direction: column; }
+  .ss__win { background: #0b5cad; color: #fff; padding: .9rem; border-radius: 8px; font-family: "Segoe UI", system-ui, sans-serif; min-height: 150px; display: flex; flex-direction: column; }
   .ss__h { color: #fff; font-size: 1.02rem; font-weight: 600; margin: 0 0 .4rem; }
   .ss__t { color: #e6eef8; font-size: .78rem; margin: 0 0 .5rem; }
   .ss__link { margin: 0; font-size: .8rem; color: #fff; text-decoration: underline; }

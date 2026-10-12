@@ -38,6 +38,8 @@ export const oneSitting = {
   appStoreUrl: 'https://apps.apple.com/app/id6810399615',
   // Cloudflare Worker (downloads-worker/) serving desktop installers from R2.
   downloadsApi: 'https://onesitting-downloads.austinemishael.workers.dev',
+  // Fallbacks only: the download dialog reads the live version and size from the Worker's /info.
+  windowsVersion: '1.0.20',
   windowsSizeBytes: 345401427,
   macReady: false,
 } as const;
