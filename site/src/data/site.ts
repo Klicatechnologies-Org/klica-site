@@ -39,8 +39,8 @@ export const oneSitting = {
   // Cloudflare Worker (downloads-worker/) serving desktop installers from R2.
   downloadsApi: 'https://onesitting-downloads.austinemishael.workers.dev',
   // Fallbacks only: the download dialog reads the live version and size from the Worker's /info.
-  windowsVersion: '1.0.29',
-  windowsSizeBytes: 352235520,
+  windowsVersion: '1.0.30',
+  windowsSizeBytes: 352264192,
   macReady: false,
 } as const;
 
