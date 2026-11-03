@@ -19,9 +19,9 @@ simple = { limit = 3, period = 60 }
 FIREBASE_PROJECT_ID = "onesitting-jamb"
 STATS_COLLECTION = "website_downloads_daily"
 # The current Windows build. To ship a new one: upload it (scripts/upload.mjs) and change these three.
-WINDOWS_KEY = "windows/OneSitting-1.0.38.msi"
-WINDOWS_VERSION = "1.0.38"
-WINDOWS_SHA256 = "e06eacbd43d79c659fbb25be7a254ee7a3f4d3c460c382613b011590752cb1cb"
+WINDOWS_KEY = "windows/OneSitting-1.0.39.msi"
+WINDOWS_VERSION = "1.0.39"
+WINDOWS_SHA256 = "618d3d3db0ee58b478ede0bf2298e045a52d05a59794b2bac10575f3bf83d500"
 
 # Secrets (`wrangler secret put <NAME>`), never in this file:
 #   SA_EMAIL       Firestore service account email (same one the onesitting-entitlements Worker uses)
