@@ -1,14 +1,17 @@
 ---
 import Logo from "./Logo.astro";
 
-const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const strip = (p: string) => p.replace(/\/+$/, "") || "/";
+const path = strip(Astro.url.pathname);
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/contact", label: "Contact" },
+  { href: "/services/", label: "Services" },
+  { href: "/contact/", label: "Contact" },
 ];
-const isCurrent = (href: string) =>
-  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+const isCurrent = (href: string) => {
+  const h = strip(href);
+  return h === "/" ? path === "/" : path === h || path.startsWith(h + "/");
+};
 ---
 
 <header class="hdr">
